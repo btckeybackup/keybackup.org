@@ -155,9 +155,9 @@ Two licences, because the repository holds two different kinds of thing.
 
 **The printable document is public domain.** `public/keybackup-v*.html`
 is released under [CC0 1.0 Universal](LICENSE-DOCUMENT): copy it, print
-it, sell it, translate it, fork it, no permission or attribution needed.
-A backup sheet should never have to carry a legal notice into a safe
-deposit box.
+it, translate it, adapt it, fork it, no permission or attribution
+needed. A backup sheet should never have to carry a legal notice into a
+safe deposit box.
 
 **Everything else is [MIT](LICENSE).** The site source, build config
 and tooling. Standard permissive terms, attribution required.
