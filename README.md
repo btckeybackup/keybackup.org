@@ -50,11 +50,33 @@ transcription risk these sheets exist to remove. Print the plain
 descriptor text beside the QR as a fallback, in case nothing to hand can
 scan that format years from now.
 
-Keep one copy alongside the paper backup of **every** signing key, so
-any single location holds everything needed to rebuild the wallet. The
-descriptor contains no private keys, so extra copies cost you nothing in
-spendability. They do cost privacy: an xpub reveals a wallet's whole
-transaction history to whoever holds it.
+### Store it *with* the key backups, not away from them
+
+Keep a copy alongside the paper backup of **every** signing key in the
+wallet.
+
+This is safe, and the reason is worth understanding. The descriptor
+cannot spend anything on its own. Nor can the descriptor plus a single
+key: spending needs as many keys as your quorum requires, and those live
+in separate places. So putting the descriptor next to one key backup
+adds no ability to steal that was not already there. Separating them, on
+the other hand, creates exactly the gap that strands multisig funds,
+because the descriptor is the piece most likely to be missing when
+someone finally needs it.
+
+The rule holds because your quorum is more than one signature. A 1-of-N
+policy is the exception: there, one key plus the descriptor is enough to
+spend, so treat the pair as you would a single-sig seed.
+
+Someone who had already gathered enough of your keys to meet the quorum
+would of course find the descriptor sitting beside them. That is true,
+and it is still not a reason to separate them. If an attacker holds two
+of your three keys you have already lost, and withholding the descriptor
+buys a short delay against an adversary who has won, at the price of a
+recovery failure that is far more likely to actually happen.
+
+Extra copies cost you nothing in spendability. They do cost privacy: an
+xpub reveals a wallet's whole transaction history to whoever holds it.
 
 | | These four sheets | Your descriptor backup |
 |---|---|---|
