@@ -14,36 +14,56 @@ laptop dies or the app is discontinued, it is gone.
 keybackup gives that information a fixed place to live, on paper, in a
 format a stranger can follow.
 
-## The two-document concept
+## What these sheets cover
 
-The backup is deliberately split in two, because the two halves have
-completely different security properties and belong in different
-places.
+keybackup backs up **keys**. One set of four sheets per key, holding
+the seed words, the passphrase, and the details that make them usable
+years later. Anyone holding sheets 2 and 3 together can move the funds,
+so a filled-in set is handled like bearer cash: written by hand, never
+photographed, never typed into any device.
 
-**Key Backup Record**, one per key, **secret**. The four printed
-sheets in this repository. They hold the seed words and the passphrase.
-Anyone holding sheets 2 and 3 together can move the funds, so these are
-handled like bearer cash: written by hand, never photographed, never
-typed into any device, stored in a safe or a deposit box. You fill in
-one set per key, so a 2-of-3 multisig means three sets, usually held by
-three different people or in three different places.
+For a **single-signature** wallet that is the whole job. The seed words
+on Sheet 2 recover your funds and you need nothing else.
 
-**Wallet Configuration Record**, one per wallet, **not secret**, copy
-freely. This holds the descriptor and every co-signer's xpub: the
-information that says how the keys combine into a wallet. It cannot
-move funds on its own and it reveals no private key. Its only real risk
-is a privacy one, since an xpub exposes a wallet's transaction history
-to whoever holds it.
+## Multisig needs a second backup, and keybackup does not supply it
 
-The asymmetry is the point. The secret half must be scarce and hidden,
-which makes it easy to lose. The non-secret half must be abundant,
-because losing it is what actually strands multisig funds. Keep at
-least one copy of the configuration record somewhere that holds no seed
-words at all, so that the copy most likely to survive is the one that
-is safe to leave lying around.
+For a **multisig** wallet, the seed words alone recover **nothing**. You
+also need the wallet descriptor: the record of the quorum, the
+derivation paths, and every co-signer's xpub. You can hold every seed in
+the quorum, and without the descriptor still be unable to rebuild the
+wallet or find your own coins. This is the most common way multisig
+funds are lost.
 
-The configuration record is not yet in this repository. It is the next
-document to be written.
+That descriptor backup is yours to create and hold. These sheets are
+not it. Sheet 1 has a table for recording *which* multisig wallets a key
+belongs to, but that table is an index, so a future recoverer knows what
+to go looking for. It does not rebuild anything. The eight-character
+checksum field catches a transcription error in a descriptor you already
+have; it cannot reconstruct one.
+
+**The recommended form is a BC-UR2 QR code of the wallet descriptor,
+printed on paper.** BC-UR2 is a Blockchain Commons encoding that Bitcoin
+wallets and signing devices already understand, so the descriptor gets
+scanned back in rather than retyped. A descriptor is a long run of xpubs
+full of confusable characters, and copying it by hand is exactly the
+transcription risk these sheets exist to remove. Print the plain
+descriptor text beside the QR as a fallback, in case nothing to hand can
+scan that format years from now.
+
+Keep one copy alongside the paper backup of **every** signing key, so
+any single location holds everything needed to rebuild the wallet. The
+descriptor contains no private keys, so extra copies cost you nothing in
+spendability. They do cost privacy: an xpub reveals a wallet's whole
+transaction history to whoever holds it.
+
+| | These four sheets | Your descriptor backup |
+|---|---|---|
+| Needed for | every key | multisig only |
+| Supplied by keybackup | yes | no, you create it |
+| One per | key | wallet |
+| Secret | yes, treat as bearer cash | no private keys, but reveals history |
+| Copies | as few as you can manage | one with each key's backup |
+| Losing it | loses one key | loses the whole wallet |
 
 ## Download
 
