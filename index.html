@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A printable paper backup for Bitcoin wallets. Records the wallet configuration your seed phrase alone will not recover."
+      content="A printable paper backup for Bitcoin wallets. Records the wallet configuration a seed phrase alone will not recover."
     />
     <title>keybackup: printable Bitcoin key backup</title>
   </head>
@@ -15,10 +15,13 @@
 
     <main id="home--main">
       <hgroup id="home--title-group">
-        <h1 id="home--title">A paper backup that actually restores your wallet</h1>
+        <h1 id="home--title">
+          A Bitcoin paper backup that follows best practices for successful
+          recovery
+        </h1>
         <p>
-          A printable, self-contained document for recording everything needed
-          to recover a Bitcoin wallet. Not just the seed phrase.
+          One printable file, recording everything a recovery needs. Not just
+          the seed words.
         </p>
       </hgroup>
 
@@ -29,60 +32,58 @@
       </p>
       <p>
         <small
-          >Or <a data-doc-view href="#" id="home--view-link">view it in your browser</a> first. One
-          HTML file. Open it, print it, fill it in by hand. It works offline,
-          makes no network requests, and stores nothing.</small
+          >Or
+          <a data-doc-view href="#" id="home--view-link"
+            >view it in your browser</a
+          >. Open it, print it, fill it in by hand. It works offline and makes
+          no network requests.</small
         >
       </p>
 
       <section id="home--why-backups-fail">
         <h2 id="home--why-backups-fail--heading">Why most Bitcoin backups fail</h2>
         <p>
-          People back up the seed phrase and stop there. But a seed phrase on its
-          own is often not enough to find your coins. Recovery also needs the
-          wallet configuration: the derivation path, the script type, the
-          passphrase if you set one, and for a multisig wallet, every other
-          co-signer's extended public key.
+          People back up the seed phrase and stop. A seed phrase alone is often
+          not enough to find the coins. Recovery also needs the wallet
+          configuration: the derivation path, the script type, the passphrase if
+          you set one, and for multisig, every co-signer's extended public key.
         </p>
         <p>
           That configuration usually lives only inside the wallet software. When
           the laptop dies, the app is discontinued, or someone else is doing the
-          recovering, it is gone, and the seed phrase alone leaves them guessing.
-          Funds are lost this way far more often than they are stolen.
-        </p>
-        <p>
-          keybackup gives that information a fixed place to live, on paper, in a
-          format a stranger can follow.
-        </p>
-        <p>
-          These sheets back up a <strong>key</strong>, one set per key. For a
-          single-signature wallet that is everything you need. For multisig you
-          must also back up the wallet descriptor separately, which keybackup
-          does not do for you.
-          <a href="/guide/#guide--descriptor-backup" id="home--descriptor-link"
-            >The guide explains how</a
-          >.
+          recovering, it is gone. Funds are lost this way far more often than
+          they are stolen.
         </p>
       </section>
 
-      <section id="home--how-to-use">
-        <h2 id="home--how-to-use--heading">How to use it</h2>
+      <section id="home--what-it-covers">
+        <h2 id="home--what-it-covers--heading">What it covers</h2>
         <p>
-          The document is four sheets, each with its own job. The guide walks
-          through what belongs on each one and how to store them.
+          Four sheets per key, filled in by hand. For a single-signature wallet
+          that is everything. For multisig you must also back up the wallet
+          descriptor yourself, which keybackup does not supply.
         </p>
-        <p><a href="/guide/" id="home--guide-link">Read the guide</a></p>
+        <p>
+          <a href="/guide/" id="home--guide-link">The guide</a> covers what goes
+          on each sheet, how to print it, and where to store it.
+        </p>
       </section>
 
       <section id="home--open-source">
         <h2 id="home--open-source--heading">Open source</h2>
         <p>
-          Nothing here is proprietary and nothing is hidden. Read the source,
-          check the document does what it claims, and change it to suit how you
-          hold your keys. Corrections, translations, and improvements are all
-          welcome.
+          Read the source, check the document does what it claims, and change it
+          to suit how you hold your keys. Corrections and translations welcome.
         </p>
-        <p><a data-repo-link href="https://github.com/btckeybackup/keybackup.org" rel="noopener" id="home--repo-link">View the project on GitHub</a></p>
+        <p>
+          <a
+            data-repo-link
+            href="https://github.com/btckeybackup/keybackup.org"
+            rel="noopener"
+            id="home--repo-link"
+            >View the project on GitHub</a
+          >
+        </p>
       </section>
     </main>
 

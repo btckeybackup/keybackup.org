@@ -6,20 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="How to fill in, print, store and test the keybackup Key Backup Record, sheet by sheet."
+      content="How to fill in, print, store and test the Bitcoin Key Backup Record, sheet by sheet."
     />
-    <title>Guide: how to use the Key Backup Record</title>
+    <title>Guide: how to use the Bitcoin Key Backup Record</title>
   </head>
   <body data-page="guide">
     <header id="guide--header"></header>
 
     <main id="guide--main">
       <hgroup id="guide--title-group">
-        <h1 id="guide--title">How to use the Key Backup Record</h1>
+        <h1 id="guide--title">How to use the Bitcoin Key Backup Record</h1>
         <p id="guide--intro">
           Four printed sheets that record one Bitcoin key: the seed words, the
-          passphrase, and the handful of details that make them usable years
-          from now by someone who may not be you.
+          passphrase, and the details that make them usable years from now by
+          someone who may not be you.
         </p>
       </hgroup>
 
@@ -47,38 +47,31 @@
         </h2>
 
         <p>
-          For a single-signature wallet, the seed words on Sheet 2 are enough to
-          recover your funds. Everything else on the sheets makes recovery
-          faster and less error-prone, but the seed is the thing.
+          For a single-signature wallet, the seed words on Sheet 2 recover your
+          funds. Everything else on the sheets makes recovery faster and less
+          error-prone.
         </p>
 
         <p>
-          For a multisig wallet, the seed words on their own recover
+          For a multisig wallet, the seed words alone recover
           <strong>nothing</strong>. You also need the wallet descriptor: the
-          record of how many keys there are, what the quorum is, and every
-          co-signer's xpub. Without it, you can hold every seed in the quorum
-          and still be unable to reconstruct the wallet or find your own coins.
-        </p>
-
-        <p>
-          This is the most common way multisig funds are lost. People back up
-          three seeds beautifully and never write down the descriptor.
+          quorum, the derivation paths, and every co-signer's xpub. Without it
+          you can hold every seed and still not find your coins. This is the
+          most common way multisig funds are lost.
         </p>
 
         <div class="callout" id="guide--before-you-start--callout">
           <p>
             <strong>keybackup does not supply that descriptor backup.</strong>
             These sheets back up a key. If you use multisig, backing up the
-            wallet itself is a separate job, and it is yours to do.
+            wallet is a separate job, and it is yours to do.
           </p>
         </div>
 
         <p>
           Sheet 1 has a table for recording which multisig wallets a key belongs
-          to. That table is an index, so whoever is recovering knows what to go
-          looking for. It does not rebuild anything. The eight-character
-          checksum field catches a transcription error in a descriptor you
-          already have; it cannot reconstruct one.
+          to. It is an index, so whoever is recovering knows what to look for.
+          It does not rebuild anything.
         </p>
 
         <table id="guide--before-you-start--document-table">
@@ -129,26 +122,20 @@
           Backing up a multisig wallet
         </h2>
 
-        <p>
-          <strong>Skip this entirely if you are single-sig.</strong> You do not
-          need it, and there is nothing to do.
-        </p>
+        <p><strong>Skip this if you are single-sig.</strong></p>
 
         <p>
-          For multisig, back up the wallet descriptor as
+          Back up the wallet descriptor as
           <strong>a BC-UR2 QR code, printed on paper</strong>. BC-UR2 is a
           Blockchain Commons encoding that Bitcoin wallets and signing devices
-          already understand, so the descriptor gets scanned back in rather than
+          already understand, so the descriptor is scanned back in rather than
           retyped. A descriptor is a long run of xpubs full of confusable
-          characters, and copying it by hand is exactly the transcription risk
-          these sheets exist to remove.
+          characters.
         </p>
 
         <p>
           Print the plain descriptor text beside the QR code as a fallback, in
-          case nothing to hand can scan that format years from now. A QR code is
-          unreadable to a human, and this is a backup meant to outlive the
-          software that made it.
+          case nothing to hand can scan that format years from now.
         </p>
 
         <h3 id="guide--descriptor-backup--storage-heading">
@@ -156,47 +143,39 @@
         </h3>
 
         <p>
-          Keep a copy alongside the paper backup of <em>every</em> signing key
-          in the wallet. Record where you kept it on Sheet 1, in the field that
-          asks where the wallet descriptor backup is kept.
+          Keep a copy alongside the paper backup of <em>every</em> signing key in
+          the wallet, and record where on Sheet 1.
         </p>
 
         <div class="callout" id="guide--descriptor-backup--callout">
           <p>
-            The descriptor cannot spend anything on its own, and neither can the
-            descriptor plus a single key. Spending needs as many keys as your
-            quorum requires, and those live in separate places. So keeping the
-            descriptor next to one key backup adds no way to steal that did not
-            already exist.
+            The descriptor cannot spend on its own, and neither can the
+            descriptor plus a single key. Spending needs your full quorum, and
+            those keys live in separate places. Keeping the descriptor next to
+            one key backup adds no way to steal that did not already exist.
           </p>
         </div>
 
         <p>
-          Separating them, on the other hand, creates exactly the gap that
-          strands multisig funds. The descriptor is the piece most likely to be
-          missing when someone finally needs it, so the sensible place for it is
-          wherever a recoverer will already be looking.
+          Separating them creates the gap that strands multisig funds. The
+          descriptor is the piece most likely to be missing when someone finally
+          needs it.
         </p>
 
         <p>
-          This holds because your quorum is more than one signature. A 1-of-N
-          policy is the exception: there, one key plus the descriptor is enough
-          to spend, so treat that pair as carefully as a single-sig seed.
+          A 1-of-N policy is the exception: there, one key plus the descriptor
+          can spend, so treat that pair like a single-sig seed.
         </p>
 
         <p>
-          Someone who had already gathered enough of your keys to meet the
-          quorum would, of course, find the descriptor sitting beside them. That
-          is true, and it is still not a reason to separate them. If an attacker
-          holds two of your three keys you have already lost, and withholding
-          the descriptor buys a short delay against an adversary who has won, at
-          the price of a recovery failure that is far more likely to actually
-          happen.
+          An attacker who already holds enough keys to meet your quorum will
+          find the descriptor beside them. By that point you have lost anyway,
+          and withholding it trades a likely recovery failure for a short delay.
         </p>
 
         <p>
-          Extra copies cost you nothing in spendability. They do cost privacy:
-          an xpub reveals a wallet's entire transaction history to whoever holds
+          Extra copies cost nothing in spendability. They do cost privacy: an
+          xpub reveals a wallet's entire transaction history to whoever holds
           it.
         </p>
       </section>
@@ -208,15 +187,19 @@
 
         <details class="step" id="guide--what-you-need">
           <summary id="guide--what-you-need--summary">
-<span class="step-label">What you need
-            <span class="hint">Paper, the right pen, and twenty quiet minutes</span></span>
-</summary>
+            <span class="step-label"
+              >What you need
+              <span class="hint"
+                >Paper, the right pen, and twenty quiet minutes</span
+              ></span
+            >
+          </summary>
           <ul id="guide--what-you-need--list">
             <li>A printer, printing at actual size</li>
             <li>
               A pen with <strong>archival pigment ink</strong>. Not pencil,
               which smudges and fades. Not gel or rollerball, which run when
-              wet. Not a thermal-printed anything.
+              wet.
             </li>
             <li>The device or software holding the key</li>
             <li>
@@ -232,11 +215,13 @@
 
         <details class="step" id="guide--print-settings">
           <summary id="guide--print-settings--summary">
-<span class="step-label">Print settings
-            <span class="hint"
-              >Print at 100%, then measure the ruler on Sheet 1</span
-            ></span>
-</summary>
+            <span class="step-label"
+              >Print settings
+              <span class="hint"
+                >Print at 100%, then measure the ruler on Sheet 1</span
+              ></span
+            >
+          </summary>
           <p>
             Set your print dialog to <strong>100% / Actual Size</strong>. Not
             "Fit to page", not "Shrink to fit". Browsers default to scaling, and
@@ -245,8 +230,8 @@
           <p>
             Sheet 1 carries a calibration ruler. After printing, measure it. If
             the line is not 100mm, the page was scaled, so change the setting
-            and reprint. Don't trust the on-screen preview; the ruler is the
-            ground truth.
+            and reprint. The ruler is the ground truth, not the on-screen
+            preview.
           </p>
           <p>
             Choose the paper size that matches your printer's tray. A4 gives
@@ -270,11 +255,13 @@
 
         <details class="step" id="guide--sheet-1">
           <summary id="guide--sheet-1--summary">
-<span class="step-label">Sheet 1: Key identity
-            <span class="hint"
-              >Master fingerprint, key origin, and the multisig index</span
-            ></span>
-</summary>
+            <span class="step-label"
+              >Sheet 1: Key identity
+              <span class="hint"
+                >Master fingerprint, key origin, and the multisig index</span
+              ></span
+            >
+          </summary>
 
           <p>
             <strong>Master fingerprint.</strong> Eight hexadecimal characters
@@ -282,46 +269,39 @@
             wallet software shows it whenever you import the key.
           </p>
           <p>
-            If you use a passphrase, load the passphrase first and record the
-            fingerprint the device shows
-            <strong>with the passphrase applied</strong>. This matters twice
-            over: it's the value that appears in your wallet descriptor, and
-            it's how a future recoverer confirms they've entered the passphrase
-            correctly.
+            If you use a passphrase, load it first and record the fingerprint
+            shown <strong>with the passphrase applied</strong>. That is the
+            value that appears in your descriptor, and how a future recoverer
+            confirms the passphrase is right.
           </p>
           <p>
             Hex uses only <code>0-9</code> and <code>a-f</code>. There is never
             an <code>o</code>, <code>l</code>, <code>s</code>, <code>g</code> or
-            <code>z</code>, so a circle is always zero, and a bare vertical
+            <code>z</code>, so a circle is always zero and a bare vertical
             stroke is always the digit one.
           </p>
 
           <p>
             <strong>Key origin.</strong> Which device or software created the
-            key, and what version. Firmware matters more than it looks: some
-            vendors have had derivation quirks in specific versions, and a
-            future recoverer benefits from knowing what produced this key.
+            key, and what version. Some vendors have had derivation quirks in
+            specific firmware versions, so record it.
           </p>
 
           <p>
             <strong>If the entropy was imported</strong>, say where the key came
-            from and what else has ever held it. Treat this as mandatory rather
-            than optional. An imported key's security is capped by the weakest
-            environment it has ever touched: a phone wallet from 2017, a paper
-            backup someone once photographed, an exchange that generated it for
-            you. Nothing else records this, and it becomes unknowable later. If
-            the honest answer is uncomfortable, that's a signal to move the
-            funds to a fresh key rather than to document the problem.
+            from and what else has ever held it. An imported key's security is
+            capped by the weakest environment it has ever touched: a phone
+            wallet from 2017, a paper backup someone once photographed, an
+            exchange that generated it for you. Nothing else records this, and
+            it becomes unknowable later. If the honest answer is uncomfortable,
+            move the funds to a fresh key rather than document the problem.
           </p>
 
           <p>
             <strong>Multisig table.</strong> Leave it blank for single-signature
-            wallets.
-          </p>
-          <p>
-            The derivation path belongs to each <em>wallet</em>, not to the key.
-            The same device used in a single-sig and two multisigs uses three
-            different paths. Fill in one row per wallet.
+            wallets. The derivation path belongs to each <em>wallet</em>, not to
+            the key: the same device used in a single-sig and two multisigs uses
+            three different paths. Fill in one row per wallet.
           </p>
           <p>
             The descriptor checksum is the eight characters after the
@@ -329,27 +309,26 @@
           </p>
           <pre id="guide--sheet-1--descriptor-example"><code>wsh(sortedmulti(2,[...]))#tjg09x5t</code></pre>
           <p>
-            It uses a restricted character set that never contains
-            <code>b</code>, <code>i</code>, <code>o</code> or the digit
-            <code>1</code>. So when you read it back: a circle is always zero, a
-            bare vertical stroke is always <code>l</code>, and a shape like
-            <code>b</code> is always <code>6</code>.
+            It never contains <code>b</code>, <code>i</code>, <code>o</code> or
+            the digit <code>1</code>. So when you read it back: a circle is
+            always zero, a bare vertical stroke is always <code>l</code>, and a
+            shape like <code>b</code> is always <code>6</code>.
           </p>
           <p>
-            The checksum verifies a descriptor you already have. It cannot
-            reconstruct one. Eight characters is enough to catch a transcription
-            error, nowhere near enough to recover the descriptor itself. Your
-            own descriptor backup is still what rebuilds the wallet.
+            The checksum catches a transcription error in a descriptor you
+            already have. Eight characters cannot reconstruct one.
           </p>
         </details>
 
         <details class="step" id="guide--sheet-2">
           <summary id="guide--sheet-2--summary">
-<span class="step-label">Sheet 2: Seed words
-            <span class="hint"
-              >Write the word numbers. They are what saves you later.</span
-            ></span>
-</summary>
+            <span class="step-label"
+              >Sheet 2: Seed words
+              <span class="hint"
+                >Write the word numbers. They are what saves you later.</span
+              ></span
+            >
+          </summary>
 
           <p>
             Write in capitals if it helps legibility, and don't join letters up.
@@ -357,10 +336,9 @@
           <p>
             <strong>Fill in the word numbers.</strong> Each BIP39 word has a
             position from 1 to 2048, and your wallet software will show them.
-            This is the highest-value field on the sheet. Handwriting degrades,
-            ink fades, and <code>flight</code> and <code>fight</code> look
-            identical after fifteen years in a drawer, but
-            <code>#712</code> doesn't.
+            Handwriting degrades, ink fades, and <code>flight</code> and
+            <code>fight</code> look identical after fifteen years in a drawer.
+            <code>#712</code> does not.
           </p>
           <p>
             Strike through every unused row. A sheet with twelve words and
@@ -370,27 +348,27 @@
           <div class="callout" id="guide--sheet-2--callout">
             <p>
               If you make a mistake, start a fresh sheet and destroy the old
-              one. Do not cross out and rewrite. A corrected seed sheet is
-              exactly the artifact that causes a failed recovery at the worst
-              possible moment.
+              one. Do not cross out and rewrite. A corrected seed sheet is what
+              causes a failed recovery at the worst possible moment.
             </p>
           </div>
           <p>
-            Two facts that will help you later. Only the first four letters of
-            each word are needed to identify it uniquely. And the final word
-            encodes a checksum, so a single mistyped word is almost always
-            rejected outright by wallet software. A phrase that "almost works"
-            means a transcription error, not lost funds.
+            Only the first four letters of each word are needed to identify it.
+            And the final word encodes a checksum, so a single mistyped word is
+            almost always rejected outright by wallet software: a phrase that
+            "almost works" means a transcription error, not lost funds.
           </p>
         </details>
 
         <details class="step" id="guide--sheet-3">
           <summary id="guide--sheet-3--summary">
-<span class="step-label">Sheet 3: Passphrase
-            <span class="hint"
-              >Optional. Where you store it is the real decision.</span
-            ></span>
-</summary>
+            <span class="step-label"
+              >Sheet 3: Passphrase
+              <span class="hint"
+                >Optional. Where you store it is the real decision.</span
+              ></span
+            >
+          </summary>
 
           <p>
             Leave this sheet blank and destroy it if you don't use a passphrase.
@@ -402,11 +380,11 @@
             and never a space at the start or end.
           </p>
           <p>
-            This isn't fussiness. Accented and unusual characters are normalised
-            differently by different wallets, so the same passphrase can open
-            different wallets depending on the software. A trailing space is
-            invisible on paper and unguessable. Each is a way to lose funds
-            while believing the backup is fine.
+            Accented and unusual characters are normalised differently by
+            different wallets, so the same passphrase can open different wallets
+            depending on the software. A trailing space is invisible on paper
+            and unguessable. Each is a way to lose funds while believing the
+            backup is fine.
           </p>
           <p>Write one character per box, leaving a box empty for each space.</p>
 
@@ -419,32 +397,32 @@
           </p>
           <p>
             For <em>multisig</em>, keeping them together is usually correct. One
-            compromised key still can't spend anything, and the far greater risk
-            is that you or your heir never recovers the passphrase at all.
+            compromised key still can't spend, and the far greater risk is that
+            you or your heir never recovers the passphrase at all.
           </p>
           <p>
             <strong>If you split them</strong>, complete the bottom block: copy
             the master fingerprint across, and name the person holding the seed
-            words. Sheet 1 has the mirror field for their contact details. Held
-            by two people, the halves work like a 2-of-2 lock: neither can move
-            funds alone.
+            words. Sheet 1 has the mirror field for their contact details.
           </p>
           <div class="callout" id="guide--sheet-3--callout">
             <p>
-              Understand the trade you're making. A 2-of-2 split converts a
-              theft risk into a loss risk. There's no threshold to fall back on:
-              if either half is destroyed, everything is gone.
+              A 2-of-2 split converts a theft risk into a loss risk. There is no
+              threshold to fall back on: if either half is destroyed, everything
+              is gone.
             </p>
           </div>
         </details>
 
         <details class="step" id="guide--sheet-4">
           <summary id="guide--sheet-4--summary">
-<span class="step-label">Sheet 4: Instructions and testing
-            <span class="hint"
-              >Not secret. Give it to your heir now, not later.</span
-            ></span>
-</summary>
+            <span class="step-label"
+              >Sheet 4: Instructions and testing
+              <span class="hint"
+                >Not secret. Give it to your heir now, not later.</span
+              ></span
+            >
+          </summary>
 
           <p>
             This sheet is not secret. Print it for every holder, and
@@ -457,9 +435,8 @@
               >Fill in the handwriting key while you're still the person who can
               read your own writing.</strong
             >
-            It takes one minute. Every character on these sheets is a lowercase
-            letter or a digit, and this row is what tells a future reader
-            whether the mark you made was a zero or an <code>o</code>, a
+            It takes one minute, and it is what tells a future reader whether
+            the mark you made was a zero or an <code>o</code>, a
             <code>1</code> or an <code>l</code>.
           </p>
         </details>
@@ -472,16 +449,18 @@
 
         <details class="step" id="guide--storing">
           <summary id="guide--storing--summary">
-<span class="step-label">Storing them
-            <span class="hint"
-              >Steel for the words, two buildings, no laminating</span
-            ></span>
-</summary>
+            <span class="step-label"
+              >Storing them
+              <span class="hint"
+                >Steel for the words, two buildings, no laminating</span
+              ></span
+            >
+          </summary>
           <p>
-            Paper is the starting point, not the destination. Transfer the seed
-            words to <strong>stamped or punched stainless steel</strong>, which
-            survives fire and flood. Keep the paper as the record of everything
-            the steel can't hold: the fingerprint, the paths, the instructions.
+            Transfer the seed words to
+            <strong>stamped or punched stainless steel</strong>, which survives
+            fire and flood. Keep the paper for what the steel can't hold: the
+            fingerprint, the paths, the instructions.
           </p>
           <p>
             Keep copies in at least two separate buildings. A single location is
@@ -497,18 +476,19 @@
             whether a sheet has been read.
           </p>
           <p>
-            Some practical notes on locations: a bank safe deposit box is secure
-            but may be sealed on your death, exactly when your heir needs it. A
-            home safe is accessible but is the first place a burglar looks. Most
-            people end up using both, splitting differently.
+            A bank safe deposit box is secure but may be sealed on your death,
+            exactly when your heir needs it. A home safe is accessible but is
+            the first place a burglar looks. Most people end up using both.
           </p>
         </details>
 
         <details class="step" id="guide--testing">
           <summary id="guide--testing--summary">
-<span class="step-label">Testing your backup
-            <span class="hint">An untested backup is a guess</span></span>
-</summary>
+            <span class="step-label"
+              >Testing your backup
+              <span class="hint">An untested backup is a guess</span></span
+            >
+          </summary>
           <p>
             Restore the seed onto a spare device or into offline wallet
             software, confirm it produces the same master fingerprint written on
@@ -527,25 +507,26 @@
 
         <details class="step" id="guide--recovering">
           <summary id="guide--recovering--summary">
-<span class="step-label">If you are the one recovering
-            <span class="hint">There is no emergency. Start here.</span></span>
-</summary>
+            <span class="step-label"
+              >If you are the one recovering
+              <span class="hint">There is no emergency. Start here.</span></span
+            >
+          </summary>
           <p>
-            If you're reading this because you need to recover a wallet: there
-            is no emergency. Funds don't expire. Rushing is how people lose
-            money at this stage.
+            There is no emergency. Funds don't expire. Rushing is how people
+            lose money at this stage.
           </p>
           <p>
-            Read Sheet 4 first, in full. Then find out whether Sheet 1 lists a
-            multisig wallet. If so, the seed words are not enough on their own,
-            and you must locate the separate descriptor backup before you do
-            anything else. Sheet 1 records where it was kept.
+            Read Sheet 4 first, in full. Then check whether Sheet 1 lists a
+            multisig wallet. If it does, the seed words are not enough on their
+            own, and you must locate the separate descriptor backup first. Sheet
+            1 records where it was kept.
           </p>
           <p>
-            If you need help, ask a Bitcoin professional you've verified
+            If you need help, ask a Bitcoin professional you have verified
             independently: a firm with a real address and a reputation, never
             someone who contacted you. Show them Sheet 4 and nothing else. A
-            trustworthy helper will never need to see or hold your seed words.
+            trustworthy helper will never need to see your seed words.
           </p>
         </details>
       </section>
@@ -564,8 +545,8 @@
           <li>
             <strong>Typing the words into anything.</strong> No legitimate
             service, wallet, exchange or support agent ever needs your seed
-            words. Everyone who asks is stealing from you, without exception,
-            including anyone who contacts you offering to help recover a wallet.
+            words. Everyone who asks is stealing from you, including anyone who
+            contacts you offering to help recover a wallet.
           </li>
           <li>
             <strong>Backing up the seed but not the descriptor.</strong> For
@@ -589,9 +570,9 @@
       <section id="guide--contributing">
         <h2 id="guide--contributing--heading">Contributing</h2>
         <p>
-          This is an open-source project and contributions are welcome.
-          Translations are the most valuable. BIP39 has wordlists in ten
-          languages, and each one needs a version of this sheet.
+          Contributions are welcome, translations most of all. BIP39 has
+          wordlists in ten languages, and each one needs a version of this
+          sheet.
         </p>
         <p>
           Every released version stays permanently downloadable. If you're
