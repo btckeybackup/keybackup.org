@@ -170,8 +170,8 @@ def page_one(s):
 
     y = s.warnbox(y, [
         "Anyone holding Sheets 2 and 3 together can move these funds. This is not a document you keep on a desk.",
-        "For multisig, these sheets alone recover NOTHING. You also need the WALLET CONFIGURATION RECORD holding",
-        "the descriptor and every co-signer's xpub. Keep one copy of it somewhere that holds no seed words.",
+        "For multisig, these sheets alone recover NOTHING. You also need a backup of the WALLET DESCRIPTOR, which",
+        "keybackup does not supply. Keep a copy of it WITH this sheet - a descriptor plus one key cannot spend.",
     ], title="BEFORE YOU WRITE ANYTHING")
 
     # --- 1 identification
@@ -220,7 +220,7 @@ def page_one(s):
     s.wrap(s.M, y, s.CW,
            "Fill this in only if this key co-signs a multisig. The derivation path is a property of each WALLET, not "
            "of the key: the same device in two multisigs uses two different paths. This table is a convenience index "
-           "only - the wallet configuration record is what actually rebuilds the wallet.", size=7.2, color=DARK)
+           "only - your descriptor backup is what actually rebuilds the wallet.", size=7.2, color=DARK)
     y -= 11 * mm
 
     cw = [52 * mm, 20 * mm, 48 * mm]
@@ -256,7 +256,7 @@ def page_one(s):
     s.text(s.M, y, "It never contains b, i, o or the digit 1 - so a circle is always 0, a bare vertical stroke is always l, and a 'b' shape is always 6.",
            size=6.8, color=GREY)
     y -= 7 * mm
-    s.field(s.M, y, s.CW, "Where the wallet configuration record is kept (at least one copy must hold no seed words)")
+    s.field(s.M, y, s.CW, "Where the wallet descriptor backup is kept (keep a copy with this sheet)")
     y -= 10 * mm
 
     # --- 5 custody
@@ -397,9 +397,9 @@ def page_four(s):
         ("You may be holding only part of it",
          "Sheet 3 is sometimes given to a different person from Sheets 1 and 2. Neither half can move funds alone. "
          "Whichever you hold, the contact details on it name the person holding the other."),
-        ("Find the wallet configuration record",
+        ("Find the wallet descriptor backup",
          "If Sheet 1 lists a multisig wallet, the seed words alone are NOT enough. You also need the configuration "
-         "record named on Sheet 1, and the other keys."),
+         "backup named on Sheet 1, and the other keys."),
         ("Get competent help",
          "Ask a Bitcoin professional you verified independently - a firm with a real address and reputation, never "
          "someone who contacted you first. Show them this sheet only. A trustworthy helper never needs to hold your "

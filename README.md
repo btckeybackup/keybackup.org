@@ -121,7 +121,7 @@ sha256sum keybackup-v1.0.html
 Expected for v1.0:
 
 ```
-d1810df4f9ebf94610ee02e4b9c61b5b6257b2f6c276acf6ab7311c0e875edf8
+cb007de4b673c29958d3e4a0726e7f51682889fd365b15d6a824eaf041fbccab
 ```
 
 If the value does not match, do not use the file.
