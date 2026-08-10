@@ -82,11 +82,30 @@ layout adjustments do not need a bump.
 
 ## The site
 
-The site is Vite plus Pico CSS. Two hard constraints:
+The site is Vite plus Pico CSS. Three hard constraints:
 
-- Pico CSS only. No Tailwind, no React, no other CSS frameworks.
+- Pico CSS only. No Tailwind, whose reset destroys Pico's semantic
+  styling, no React, no other CSS frameworks.
 - No analytics, trackers, cookies, or third-party requests anywhere. A
   page about paper backups has no business phoning home.
+- Never commit generated PDFs. They are release artifacts only.
+
+### Palette
+
+```
+--saffron:    #ff9500
+--ink:        #031926
+--snow:       #fffbff
+--dim-grey:   #727072
+--grey-olive: #808f87
+```
+
+**Saffron on snow is 2.2:1 and fails WCAG AA.** Never use it as text on
+a light background. On ink it is 8.1:1, so it is fine for text on dark,
+for button fills with ink-coloured text, and for accents. The site is
+pinned to the dark theme for exactly this reason: it is the only place
+the accent colour is usable, so there is no light variant to keep in
+step.
 
 ## Licence
 
