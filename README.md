@@ -14,36 +14,78 @@ laptop dies or the app is discontinued, it is gone.
 keybackup gives that information a fixed place to live, on paper, in a
 format a stranger can follow.
 
-## The two-document concept
+## What these sheets cover
 
-The backup is deliberately split in two, because the two halves have
-completely different security properties and belong in different
-places.
+keybackup backs up **keys**. One set of four sheets per key, holding
+the seed words, the passphrase, and the details that make them usable
+years later. Anyone holding sheets 2 and 3 together can move the funds,
+so a filled-in set is handled like bearer cash: written by hand, never
+photographed, never typed into any device.
 
-**Key Backup Record**, one per key, **secret**. The four printed
-sheets in this repository. They hold the seed words and the passphrase.
-Anyone holding sheets 2 and 3 together can move the funds, so these are
-handled like bearer cash: written by hand, never photographed, never
-typed into any device, stored in a safe or a deposit box. You fill in
-one set per key, so a 2-of-3 multisig means three sets, usually held by
-three different people or in three different places.
+For a **single-signature** wallet that is the whole job. The seed words
+on Sheet 2 recover your funds and you need nothing else.
 
-**Wallet Configuration Record**, one per wallet, **not secret**, copy
-freely. This holds the descriptor and every co-signer's xpub: the
-information that says how the keys combine into a wallet. It cannot
-move funds on its own and it reveals no private key. Its only real risk
-is a privacy one, since an xpub exposes a wallet's transaction history
-to whoever holds it.
+## Multisig needs a second backup, and keybackup does not supply it
 
-The asymmetry is the point. The secret half must be scarce and hidden,
-which makes it easy to lose. The non-secret half must be abundant,
-because losing it is what actually strands multisig funds. Keep at
-least one copy of the configuration record somewhere that holds no seed
-words at all, so that the copy most likely to survive is the one that
-is safe to leave lying around.
+For a **multisig** wallet, the seed words alone recover **nothing**. You
+also need the wallet descriptor: the record of the quorum, the
+derivation paths, and every co-signer's xpub. You can hold every seed in
+the quorum, and without the descriptor still be unable to rebuild the
+wallet or find your own coins. This is the most common way multisig
+funds are lost.
 
-The configuration record is not yet in this repository. It is the next
-document to be written.
+That descriptor backup is yours to create and hold. These sheets are
+not it. Sheet 1 has a table for recording *which* multisig wallets a key
+belongs to, but that table is an index, so a future recoverer knows what
+to go looking for. It does not rebuild anything. The eight-character
+checksum field catches a transcription error in a descriptor you already
+have; it cannot reconstruct one.
+
+**The recommended form is a BC-UR2 QR code of the wallet descriptor,
+printed on paper.** BC-UR2 is a Blockchain Commons encoding that Bitcoin
+wallets and signing devices already understand, so the descriptor gets
+scanned back in rather than retyped. A descriptor is a long run of xpubs
+full of confusable characters, and copying it by hand is exactly the
+transcription risk these sheets exist to remove. Print the plain
+descriptor text beside the QR as a fallback, in case nothing to hand can
+scan that format years from now.
+
+### Store it *with* the key backups, not away from them
+
+Keep a copy alongside the paper backup of **every** signing key in the
+wallet.
+
+This is safe, and the reason is worth understanding. The descriptor
+cannot spend anything on its own. Nor can the descriptor plus a single
+key: spending needs as many keys as your quorum requires, and those live
+in separate places. So putting the descriptor next to one key backup
+adds no ability to steal that was not already there. Separating them, on
+the other hand, creates exactly the gap that strands multisig funds,
+because the descriptor is the piece most likely to be missing when
+someone finally needs it.
+
+The rule holds because your quorum is more than one signature. A 1-of-N
+policy is the exception: there, one key plus the descriptor is enough to
+spend, so treat the pair as you would a single-sig seed.
+
+Someone who had already gathered enough of your keys to meet the quorum
+would of course find the descriptor sitting beside them. That is true,
+and it is still not a reason to separate them. If an attacker holds two
+of your three keys you have already lost, and withholding the descriptor
+buys a short delay against an adversary who has won, at the price of a
+recovery failure that is far more likely to actually happen.
+
+Extra copies cost you nothing in spendability. They do cost privacy: an
+xpub reveals a wallet's whole transaction history to whoever holds it.
+
+| | These four sheets | Your descriptor backup |
+|---|---|---|
+| Needed for | every key | multisig only |
+| Supplied by keybackup | yes | no, you create it |
+| One per | key | wallet |
+| Secret | yes, treat as bearer cash | no private keys, but reveals history |
+| Copies | as few as you can manage | one with each key's backup |
+| Losing it | loses one key | loses the whole wallet |
 
 ## Download
 
@@ -79,7 +121,7 @@ sha256sum keybackup-v1.0.html
 Expected for v1.0:
 
 ```
-d1810df4f9ebf94610ee02e4b9c61b5b6257b2f6c276acf6ab7311c0e875edf8
+cb007de4b673c29958d3e4a0726e7f51682889fd365b15d6a824eaf041fbccab
 ```
 
 If the value does not match, do not use the file.
@@ -112,11 +154,10 @@ nothing minifies it, and nothing may add an external reference to it.
 Two licences, because the repository holds two different kinds of thing.
 
 **The printable document is public domain.** `public/keybackup-v*.html`
-and `reference/keyrecord.py` are released under
-[CC0 1.0 Universal](LICENSE-DOCUMENT): copy it, print it, sell it,
-translate it, fork it, no permission or attribution needed. A backup
-sheet should never have to carry a legal notice into a safe deposit
-box.
+is released under [CC0 1.0 Universal](LICENSE-DOCUMENT): copy it, print
+it, translate it, adapt it, fork it, no permission or attribution
+needed. A backup sheet should never have to carry a legal notice into a
+safe deposit box.
 
 **Everything else is [MIT](LICENSE).** The site source, build config
 and tooling. Standard permissive terms, attribution required.

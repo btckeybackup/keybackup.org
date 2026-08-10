@@ -336,8 +336,8 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
   <div class="warn">
     <h2>BEFORE YOU WRITE ANYTHING</h2>
     <p>Anyone holding Sheets 2 and 3 together can move these funds. This is not a document you keep on a desk.</p>
-    <p>For multisig, these sheets alone recover NOTHING. You also need the WALLET CONFIGURATION RECORD holding</p>
-    <p>the descriptor and every co-signer's xpub. Keep one copy of it somewhere that holds no seed words.</p>
+    <p>For multisig, these sheets alone recover NOTHING. You also need a backup of the WALLET DESCRIPTOR, which</p>
+    <p>keybackup does not supply. Keep a copy of it WITH this sheet - a descriptor plus one key cannot spend.</p>
   </div>
 
   <div class="band">1. Identification</div>
@@ -382,7 +382,7 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
   </div>
 
   <div class="band">4. Multisig wallets this key belongs to - OPTIONAL, leave blank for single-sig</div>
-  <p class="prose s72">Fill this in only if this key co-signs a multisig. The derivation path is a property of each WALLET, not of the key: the same device in two multisigs uses two different paths. This table is a convenience index only - the wallet configuration record is what actually rebuilds the wallet.</p>
+  <p class="prose s72">Fill this in only if this key co-signs a multisig. The derivation path is a property of each WALLET, not of the key: the same device in two multisigs uses two different paths. This table is a convenience index only - your descriptor backup is what actually rebuilds the wallet.</p>
 
   <div class="mstable">
     <div class="mshead">
@@ -413,7 +413,7 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
   <p class="hint s68" style="margin-bottom:var(--sp-block)">It never contains b, i, o or the digit 1 - so a circle is always 0, a bare vertical stroke is always l, and a 'b' shape is always 6.</p>
 
   <div class="row">
-    <div class="field"><div class="cap">Where the wallet configuration record is kept (at least one copy must hold no seed words)</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Where the wallet descriptor backup is kept (keep a copy with this sheet)</div><div class="line"></div></div>
   </div>
 
   <div class="band">5. Custody and storage</div>
@@ -595,8 +595,8 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
       <p>Sheet 3 is sometimes given to a different person from Sheets 1 and 2. Neither half can move funds alone. Whichever you hold, the contact details on it name the person holding the other.</p>
     </div>
     <div class="step">
-      <h3>Find the wallet configuration record</h3>
-      <p>If Sheet 1 lists a multisig wallet, the seed words alone are NOT enough. You also need the configuration record named on Sheet 1, and the other keys.</p>
+      <h3>Find the wallet descriptor backup</h3>
+      <p>If Sheet 1 lists a multisig wallet, the seed words alone are NOT enough. You also need the descriptor backup named on Sheet 1, and the other keys.</p>
     </div>
     <div class="step">
       <h3>Get competent help</h3>
