@@ -62,19 +62,44 @@
 
         <p>
           This is the most common way multisig funds are lost. People back up
-          three seeds beautifully and never write down the descriptor. So there
-          are two documents, with opposite handling rules:
+          three seeds beautifully and never write down the descriptor.
+        </p>
+
+        <div class="callout" id="guide--before-you-start--callout">
+          <p>
+            <strong>keybackup does not supply that descriptor backup.</strong>
+            These sheets back up a key. If you use multisig, backing up the
+            wallet itself is a separate job, and it is yours to do.
+          </p>
+        </div>
+
+        <p>
+          Sheet 1 has a table for recording which multisig wallets a key belongs
+          to. That table is an index, so whoever is recovering knows what to go
+          looking for. It does not rebuild anything. The eight-character
+          checksum field catches a transcription error in a descriptor you
+          already have; it cannot reconstruct one.
         </p>
 
         <table id="guide--before-you-start--document-table">
           <thead>
             <tr>
               <th scope="col"></th>
-              <th scope="col">Key Backup Record</th>
-              <th scope="col">Wallet Configuration Record</th>
+              <th scope="col">These four sheets</th>
+              <th scope="col">Your descriptor backup</th>
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <th scope="row">Needed for</th>
+              <td>every key</td>
+              <td>multisig only</td>
+            </tr>
+            <tr>
+              <th scope="row">Supplied by keybackup</th>
+              <td>yes</td>
+              <td>no, you create it</td>
+            </tr>
             <tr>
               <th scope="row">One per</th>
               <td>key</td>
@@ -83,12 +108,12 @@
             <tr>
               <th scope="row">Secret?</th>
               <td>yes, treat as bearer cash</td>
-              <td>no</td>
+              <td>no private keys, but reveals history</td>
             </tr>
             <tr>
               <th scope="row">Copies</th>
               <td>as few as you can manage</td>
-              <td>as many as you like</td>
+              <td>one with each key's backup</td>
             </tr>
             <tr>
               <th scope="row">Losing it</th>
@@ -97,12 +122,47 @@
             </tr>
           </tbody>
         </table>
+      </section>
 
-        <div class="callout" id="guide--before-you-start--callout">
+      <section id="guide--descriptor-backup">
+        <h2 id="guide--descriptor-backup--heading">
+          Backing up a multisig wallet
+        </h2>
+
+        <p>
+          <strong>Skip this entirely if you are single-sig.</strong> You do not
+          need it, and there is nothing to do.
+        </p>
+
+        <p>
+          For multisig, back up the wallet descriptor as
+          <strong>a BC-UR2 QR code, printed on paper</strong>. BC-UR2 is a
+          Blockchain Commons encoding that Bitcoin wallets and signing devices
+          already understand, so the descriptor gets scanned back in rather than
+          retyped. A descriptor is a long run of xpubs full of confusable
+          characters, and copying it by hand is exactly the transcription risk
+          these sheets exist to remove.
+        </p>
+
+        <p>
+          Print the plain descriptor text beside the QR code as a fallback, in
+          case nothing to hand can scan that format years from now. A QR code is
+          unreadable to a human, and this is a backup meant to outlive the
+          software that made it.
+        </p>
+
+        <p>
+          Keep one copy alongside the paper backup of <em>every</em> signing
+          key, so any single location holds everything needed to rebuild the
+          wallet. Record where you kept it on Sheet 1, in the field that asks
+          where the wallet configuration record is kept.
+        </p>
+
+        <div class="callout" id="guide--descriptor-backup--callout">
           <p>
-            Keep at least one copy of the configuration record somewhere that
-            holds <strong>no seed words</strong>. That single rule is what makes
-            a multisig survivable.
+            The descriptor holds no private keys, so extra copies cost you
+            nothing in spendability. They do cost privacy: an xpub reveals a
+            wallet's entire transaction history to whoever holds it.
           </p>
         </div>
       </section>
@@ -178,7 +238,7 @@
           <summary id="guide--sheet-1--summary">
 <span class="step-label">Sheet 1: Key identity
             <span class="hint"
-              >Master fingerprint, key origin, and the multisig table</span
+              >Master fingerprint, key origin, and the multisig index</span
             ></span>
 </summary>
 
@@ -244,8 +304,8 @@
           <p>
             The checksum verifies a descriptor you already have. It cannot
             reconstruct one. Eight characters is enough to catch a transcription
-            error, nowhere near enough to recover the descriptor itself. The
-            configuration record is still what rebuilds the wallet.
+            error, nowhere near enough to recover the descriptor itself. Your
+            own descriptor backup is still what rebuilds the wallet.
           </p>
         </details>
 
@@ -443,8 +503,9 @@
           </p>
           <p>
             Read Sheet 4 first, in full. Then find out whether Sheet 1 lists a
-            multisig wallet. If so, locate the wallet configuration record
-            before you do anything else.
+            multisig wallet. If so, the seed words are not enough on their own,
+            and you must locate the separate descriptor backup before you do
+            anything else. Sheet 1 records where it was kept.
           </p>
           <p>
             If you need help, ask a Bitcoin professional you've verified
@@ -474,7 +535,8 @@
           </li>
           <li>
             <strong>Backing up the seed but not the descriptor.</strong> For
-            multisig, this is the one that gets people.
+            multisig, this is the one that gets people. keybackup does not do it
+            for you.
           </li>
           <li>
             <strong
