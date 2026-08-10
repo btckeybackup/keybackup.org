@@ -1,0 +1,186 @@
+/* keybackup palette, mapped onto Pico's custom properties.
+   The site is pinned to the dark theme: saffron on ink is 8.1:1, but saffron
+   on snow is 2.2:1 and fails WCAG AA, so there is no light variant. */
+
+:root {
+  --saffron: #ff9500;
+  --saffron-bright: #ffab33;
+  --ink: #031926;
+  --ink-raised: #0a2739;
+  --snow: #fffbff;
+  --dim-grey: #727072;
+  --grey-olive: #808f87;
+}
+
+/* Matches Pico's own [data-theme=dark] specificity; loaded after it, so wins. */
+[data-theme='dark'] {
+  --pico-background-color: var(--ink);
+  --pico-color: var(--snow);
+  --pico-h1-color: var(--snow);
+  --pico-h2-color: var(--snow);
+  --pico-h3-color: var(--snow);
+  --pico-h4-color: var(--snow);
+  --pico-h5-color: var(--snow);
+  --pico-h6-color: var(--snow);
+  --pico-muted-color: var(--grey-olive);
+  --pico-border-color: var(--ink-raised);
+  --pico-muted-border-color: var(--ink-raised);
+  --pico-card-background-color: var(--ink-raised);
+  --pico-card-sectioning-background-color: var(--ink-raised);
+  --pico-code-background-color: var(--ink-raised);
+  --pico-code-color: var(--grey-olive);
+  --pico-blockquote-border-color: var(--saffron);
+  --pico-text-selection-color: rgb(255 149 0 / 30%);
+
+  /* Saffron as accent: link text on ink, and button fills with ink text. */
+  --pico-primary: var(--saffron);
+  --pico-primary-hover: var(--saffron-bright);
+  --pico-primary-underline: rgb(255 149 0 / 50%);
+  --pico-primary-focus: rgb(255 149 0 / 37.5%);
+  --pico-primary-background: var(--saffron);
+  --pico-primary-hover-background: var(--saffron-bright);
+  --pico-primary-border: var(--saffron);
+  --pico-primary-hover-border: var(--saffron-bright);
+  --pico-primary-inverse: var(--ink);
+
+  --pico-secondary: var(--grey-olive);
+  --pico-secondary-hover: var(--snow);
+  --pico-secondary-background: var(--ink-raised);
+  --pico-secondary-hover-background: var(--dim-grey);
+  --pico-secondary-border: var(--ink-raised);
+  --pico-secondary-hover-border: var(--dim-grey);
+  --pico-secondary-inverse: var(--snow);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body > main {
+  flex: 1;
+}
+
+body > header,
+body > footer {
+  border-color: var(--ink-raised);
+  border-style: solid;
+  border-width: 0;
+}
+
+body > header {
+  border-bottom-width: 1px;
+}
+
+body > footer {
+  border-top-width: 1px;
+  color: var(--grey-olive);
+}
+
+/* The one thing on the landing page that must be impossible to miss. */
+[data-doc-download] {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+/* Lead paragraph directly under a page title. */
+h1 + p {
+  color: var(--grey-olive);
+  font-size: 1.125rem;
+}
+
+/* A readable measure. Pico's container is wide enough that body text runs
+   past 90 characters a line, which is the main reason the guide read as a
+   wall. Header and footer share the width so every edge lines up. */
+body > header,
+body > main,
+body > footer {
+  max-width: 46rem;
+}
+
+/* Groups the guide into phases without shouting. */
+.phase {
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--grey-olive);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* The failure modes. Too important to read like the rest of the page. */
+.danger {
+  border: 1px solid var(--dim-grey);
+  border-radius: var(--pico-border-radius);
+  padding: 1.25rem 1.5rem 0.5rem;
+}
+.danger > h2 {
+  font-size: 1.25rem;
+}
+
+/* The framing that must not sit behind a click. */
+.callout {
+  border-left: 3px solid var(--saffron);
+  background: var(--ink-raised);
+  border-radius: 0 var(--pico-border-radius) var(--pico-border-radius) 0;
+  padding: 1rem 1.25rem;
+  margin-bottom: var(--pico-typography-spacing-vertical);
+}
+.callout > :last-child {
+  margin-bottom: 0;
+}
+
+/* Collapsible steps, using native <details>. No JavaScript. */
+details.step {
+  border: 1px solid var(--ink-raised);
+  border-radius: var(--pico-border-radius);
+  background: var(--ink-raised);
+  margin-bottom: 0.5rem;
+  padding: 0 1.25rem;
+  transition: border-color 0.15s;
+}
+details.step:hover,
+details.step[open] {
+  border-color: var(--dim-grey);
+}
+/* Flex so Pico's chevron sits centred beside a two-line label rather than
+   floating to the bottom of it. */
+details.step > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  font-weight: 600;
+}
+details.step > summary::after {
+  margin: 0;
+  float: none;
+  flex: none;
+  transition: transform 0.2s;
+}
+details.step > summary .hint {
+  display: block;
+  font-weight: 400;
+  font-size: 0.875rem;
+  color: var(--grey-olive);
+  margin-top: 0.15rem;
+}
+/* Pico mutes an open summary, which reads as disabled. The open one is the
+   section you are actually reading, so keep it at full strength. */
+details.step[open] > summary {
+  color: var(--pico-color);
+  border-bottom: 1px solid var(--ink);
+  margin-bottom: 0.75rem;
+}
+details.step > :last-child {
+  padding-bottom: 0.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details.step,
+  details.step > summary::after {
+    transition: none;
+  }
+}

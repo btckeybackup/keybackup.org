@@ -1,0 +1,37 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Release artifacts only, never committed.
+*.pdf
+
+# Local, machine-specific instructions.
+CLAUDE.local.md
+
+# Local editor tooling and vendored third-party skills. Not this project's
+# code, and not ours to redistribute.
+.claude/
+.agents/
+skills-lock.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editor and OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Scratch output from browser automation
+.playwright-mcp/

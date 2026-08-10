@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bitcoin Seed Backup Record</title>
+<style>
+/* ==================================================================
+   Bitcoin Seed Backup Record - printable blank template.
+   Self-contained: no imports, no webfonts, no scripts, no network.
+   All layout in mm. Font sizes in pt, matching the source spec.
+   ================================================================== */
+
+:root {
+  /* The version string is declared here and nowhere else. It is pulled
+     into the sheet 1 header and all four footers with content: var(). */
+  --version: "v1.0";
+  --project: "keybackup.org";
+
+  --dark:  #1A1A1A;
+  --grey:  #767676;
+  --light: #BFBFBF;
+  --rule:  #9A9A9A;
+
+  --sans: Helvetica, Arial, "Helvetica Neue", "Liberation Sans", system-ui, sans-serif;
+  --mono: "Courier New", Courier, "Liberation Mono", monospace;
+
+  /* Usable height inside a 15mm-margined A4 page (297 - 30), less 3mm
+     of safety so a full sheet never tips onto a second page. */
+  --sheet-h: 264mm;
+
+  /* Vertical rhythm. One set of values for both page sizes, sized to fit
+     Letter, which is 18mm shorter than A4. A4 carries the difference as
+     slack above the footer rather than as a second layout to maintain. */
+  --sp-band-top: 2.2mm;  /* space above a section band */
+  --sp-band-bot: 1.5mm;  /* space below a section band */
+  --sp-block:    1.7mm;  /* space below a generic block */
+  --fh:          6.9mm;  /* write-in field height */
+  --fg:          0.6mm;  /* space below a field row */
+  --lh-prose:    1.22;
+  --lh-warn:     1.22;
+  --sp-step:     1.3mm;  /* space below a numbered instruction on sheet 4 */
+}
+
+@page { size: A4; margin: 15mm; }
+@page letter { size: Letter; margin: 15mm; }
+
+body.letter .sheet { page: letter; }
+body.letter { --sheet-h: 246mm; }   /* 279 - 30, less 3mm safety */
+
+/* Chrome drops background fills when printing unless told otherwise.
+   Without this the black section bands vanish and the sheets print as
+   unstructured text. */
+html, body, .band, .head, .sheet {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--sans);
+  color: var(--dark);
+  background: #fff;
+  font-size: 9pt;
+  line-height: 1.2;
+}
+
+/* ---------------------------------------------------------------- sheet */
+
+.sheet {
+  width: 180mm;                /* A4 content width: 210 - 30 */
+  min-height: var(--sheet-h);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  page-break-after: always;
+  break-after: page;
+}
+body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
+
+/* Without this the final sheet emits a trailing blank fifth page. */
+.sheet:last-child { page-break-after: auto; break-after: auto; }
+
+/* ---------------------------------------------------------------- header */
+
+.head {
+  height: 13mm;
+  background: var(--dark);
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3mm;
+  flex: none;
+}
+.head h1 { font-size: 13pt; font-weight: bold; line-height: 1.1; }
+.head .sub { font-size: 7.6pt; font-weight: normal; margin-top: 1.1mm; }
+.head .right { text-align: right; }
+.head .secret { font-size: 8pt; font-weight: bold; line-height: 1.1; }
+.head .page-of { font-size: 7.6pt; margin-top: 1.1mm; }
+
+/* The one place the version and project name are rendered from.
+   white-space: pre keeps the runs of spaces around the separators. */
+.stamp::before { content: var(--project) " " var(--version) "   |   "; white-space: pre; }
+.foot .stamp::before { content: var(--project) " " var(--version) "  -  "; }
+
+/* ---------------------------------------------------------------- footer */
+
+.foot {
+  margin-top: auto;
+  padding-top: 2mm;
+  display: flex;
+  justify-content: space-between;
+  color: var(--grey);
+  font-size: 6.8pt;
+  flex: none;
+}
+
+/* ---------------------------------------------------------------- blocks */
+
+.band {
+  height: 7mm;
+  background: var(--dark);
+  color: #fff;
+  font-size: 9.5pt;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  padding-left: 2.5mm;
+  margin-top: var(--sp-band-top);
+  margin-bottom: var(--sp-band-bot);
+}
+.warn {
+  border: 0.39mm solid var(--dark);
+  padding: 3mm;
+  margin-bottom: var(--sp-block);
+}
+.warn h2 { font-size: 8.5pt; font-weight: bold; line-height: var(--lh-warn); }
+/* Warning lines are pre-broken in the source, and some carry runs of
+   spaces used as columns. Preserve them, but still allow a wrap rather
+   than letting a long line spill outside the box. */
+.warn p {
+  font-size: 8.2pt;
+  line-height: var(--lh-warn);
+  white-space: pre-wrap;
+}
+.warn.s8   h2, .warn.s8   p { font-size: 8pt; }
+.warn.s78  h2, .warn.s78  p { font-size: 7.8pt; }
+.warn.s8   h2 { font-size: 8.3pt; }
+.warn.s78  h2 { font-size: 8.1pt; }
+
+.prose { font-size: 8pt; line-height: var(--lh-prose); margin-bottom: var(--sp-block); }
+.prose.s72 { font-size: 7.2pt; }
+.prose.s73 { font-size: 7.3pt; }
+.hint { font-size: 7pt; color: var(--grey); line-height: var(--lh-prose); }
+.hint.s68 { font-size: 6.8pt; }
+/* Lines that use runs of spaces as column gaps, as the source does. */
+.pre { white-space: pre-wrap; }
+.note { font-size: 7pt; color: var(--grey); margin-bottom: var(--sp-block); }
+
+/* ---------------------------------------------------------------- fields */
+
+.row { display: flex; gap: 5mm; margin-bottom: var(--fg); }
+.row > * { flex: 1 1 0; min-width: 0; }
+
+/* min-height, not height: a field with a wrapped caption or a checkbox row
+   grows and pushes what follows down instead of overlapping it. */
+.field { min-height: var(--fh); display: flex; flex-direction: column; }
+.field .cap {
+  font-size: 7pt;
+  color: var(--grey);
+  text-transform: uppercase;
+  line-height: 1.15;
+}
+.field .line { margin-top: auto; border-bottom: 0.18mm solid var(--rule); }
+
+/* ---------------------------------------------------------------- boxes */
+
+.boxes { display: grid; }
+.boxes > i { border: 0.21mm solid var(--light); display: block; }
+
+.cbrow { display: flex; align-items: center; gap: 4mm; }
+.cb { display: inline-flex; align-items: center; gap: 1.8mm; font-size: 8.5pt; }
+.cb::before {
+  content: "";
+  width: 3.6mm; height: 3.6mm;
+  border: 0.25mm solid var(--grey);
+  flex: none;
+}
+.cb.sm { font-size: 7.5pt; gap: 1.4mm; }
+.cb.sm::before { width: 3.2mm; height: 3.2mm; }
+
+.mono { font-family: var(--mono); font-weight: bold; }
+
+/* ---------------------------------------------- sheet 1: print calibration */
+
+.calib { display: flex; align-items: center; gap: 4mm; margin: 2.5mm 0 var(--sp-block); }
+.calib .ruler {
+  width: 100mm;                /* outer edge to outer edge is exactly 100mm */
+  height: 3.4mm;
+  flex: none;
+  border: 0.25mm solid var(--dark);
+  border-top: 0;
+  position: relative;
+}
+.calib .rlabel { font-size: 6.2pt; color: var(--grey); white-space: nowrap; }
+.calib .rtext { font-size: 7pt; line-height: 1.25; }
+
+/* ------------------------------------------- sheet 1: fingerprint + table */
+
+.split { display: flex; gap: 8mm; margin-bottom: var(--sp-block); }
+.fp8   { grid-template-columns: repeat(8, 9mm); }
+.fp8 > i { height: 9mm; }
+
+.mstable { margin-bottom: var(--sp-block); }
+.mshead { display: flex; margin-bottom: 1mm; }
+.mshead > span { font-size: 6.2pt; color: var(--grey); padding-left: 1.2mm; }
+.mshead .c1 { width: 52mm; flex: none; }
+.mshead .c2 { width: 20mm; flex: none; }
+.mshead .c3 { width: 48mm; flex: none; }
+.mshead .sub2 { display: block; font-size: 5.6pt; }
+.msrow { display: flex; height: 9mm; }
+.msrow > .c { border: 0.21mm solid var(--light); }
+.msrow .c1 { width: 52mm; flex: none; }
+.msrow .c2 { width: 20mm; flex: none; }
+.msrow .c3 { width: 48mm; flex: none; }
+.msrow .fpcells {
+  display: grid;
+  grid-template-columns: repeat(8, 6.5mm);
+  margin-left: 1.5mm;
+  align-self: center;
+}
+.msrow .fpcells > i { height: 6.2mm; }
+
+.decoder { display: flex; }
+.decoder .d1 { width: 100mm; flex: none; }
+
+/* -------------------------------------------------- sheet 2: seed words */
+
+.seed { display: flex; gap: 0; }
+.seedcol { flex: 1 1 0; }
+.seedhead { display: flex; font-size: 6.5pt; color: var(--grey); margin-bottom: 0.6mm; }
+.seedhead .h1 { width: 11mm; flex: none; }
+.seedhead .h2 { width: 51mm; flex: none; }
+.wrow { display: flex; align-items: center; height: 10.6mm; }
+.wrow .wn {
+  width: 9mm; flex: none;
+  text-align: right; padding-right: 1mm;
+  font-size: 8.5pt; color: var(--grey);
+}
+.wrow .w8 { grid-template-columns: repeat(8, 6.1mm); margin-left: 2mm; }
+.wrow .w8 > i { height: 8.8mm; }
+.wrow .n4 { grid-template-columns: repeat(4, 5.6mm); margin-left: 2.2mm; }
+.wrow .n4 > i { height: 8.8mm; }
+
+/* -------------------------------------------------- sheet 3: passphrase */
+
+.pprow { display: grid; grid-template-columns: 5mm 1fr; align-items: center; margin-bottom: 1.2mm; }
+.pprow .ppn { font-size: 6pt; color: var(--grey); text-align: right; padding-right: 2mm; }
+.pprow .ppb { display: grid; grid-template-columns: repeat(20, 1fr); }
+.pprow .ppb > i { height: 11.6mm; }
+.fp8b { grid-template-columns: repeat(8, 8mm); }
+.fp8b > i { height: 8.5mm; }
+
+/* --------------------------------- sheet 4: steps, handwriting, test log */
+
+.step { margin-bottom: var(--sp-step); }
+.step h3 { font-size: 8.3pt; font-weight: bold; text-transform: uppercase; }
+.step p {
+  font-size: 7.9pt;
+  line-height: 1.23;
+  margin-left: 4mm;
+  margin-top: 1.1mm;
+}
+
+.hwkey { display: grid; grid-template-columns: repeat(8, 1fr); margin-bottom: var(--sp-block); }
+.hw { text-align: center; padding: 0 2mm; }
+.hw .ch { font-family: var(--mono); font-weight: bold; font-size: 10pt; }
+.hw .nm { font-size: 6pt; color: var(--grey); margin-top: 0.6mm; }
+.hw .bx { height: 9mm; border: 0.21mm solid var(--light); margin-top: 1.6mm; }
+
+.logs { display: flex; justify-content: space-between; }
+.logblock { width: 85mm; }
+.loghead { display: flex; font-size: 6pt; color: var(--grey); margin-bottom: 0.8mm; }
+.loghead .l1 { width: 22mm; flex: none; padding-left: 1.2mm; }
+.loghead .l2 { width: 46mm; flex: none; padding-left: 1.2mm; }
+.loghead .l3 { width: 17mm; flex: none; padding-left: 1.2mm; }
+.logrow { display: flex; height: 6.2mm; }
+.logrow > i { border: 0.21mm solid var(--light); display: block; }
+.logrow .l1 { width: 22mm; flex: none; }
+.logrow .l2 { width: 46mm; flex: none; }
+.logrow .l3 { width: 17mm; flex: none; }
+
+/* ---------------------------------------------------------------- screen */
+
+@media screen {
+  body { background: #E9E9E9; padding: 8mm 0; }
+  .sheet {
+    background: #fff;
+    padding: 15mm;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto 8mm;
+    box-shadow: 0 1mm 3mm rgba(0,0,0,.25);
+  }
+  body.letter .sheet { width: 216mm; min-height: 279mm; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ============================================================ SHEET 1 -->
+<section class="sheet">
+  <div class="head">
+    <div>
+      <h1>BITCOIN SEED BACKUP RECORD</h1>
+      <div class="sub"><span class="stamp"></span>Complete one set of these four sheets for each key. Store as you would bearer cash.</div>
+    </div>
+    <div class="right">
+      <div class="secret">SECRET</div>
+      <div class="page-of">SHEET 1 OF 4</div>
+    </div>
+  </div>
+
+  <div class="calib">
+    <div>
+      <div class="rlabel">100 mm</div>
+      <div class="ruler"></div>
+    </div>
+    <p class="rtext">If this does not measure 100mm your printer scaled the page. Reprint at 100% / Actual Size.</p>
+  </div>
+
+  <div class="warn">
+    <h2>BEFORE YOU WRITE ANYTHING</h2>
+    <p>Anyone holding Sheets 2 and 3 together can move these funds. This is not a document you keep on a desk.</p>
+    <p>For multisig, these sheets alone recover NOTHING. You also need the WALLET CONFIGURATION RECORD holding</p>
+    <p>the descriptor and every co-signer's xpub. Keep one copy of it somewhere that holds no seed words.</p>
+  </div>
+
+  <div class="band">1. Identification</div>
+  <div class="row">
+    <div class="field"><div class="cap">Wallet / key nickname</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Date created (DD / MM / YYYY)</div><div class="line"></div></div>
+    <div class="field"><div class="cap">This is copy ______ of ______</div><div class="line"></div></div>
+  </div>
+
+  <div class="band">2. Key origin - the device or software this key was created on</div>
+  <div class="row">
+    <div class="field"><div class="cap">Make, brand or software</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Model, edition or version</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Serial number (if any)</div><div class="line"></div></div>
+  </div>
+  <div class="row">
+    <div class="field"><div class="cap">Firmware / app version at creation</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Created by</div><div class="line"></div></div>
+    <div class="field">
+      <div class="cap">Entropy source</div>
+      <div class="cbrow" style="margin-top:1.4mm">
+        <span class="cb sm">Device</span>
+        <span class="cb sm">Dice</span>
+        <span class="cb sm">Imported</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="field"><div class="cap">If IMPORTED, state where this key came from and what else has ever held it (old device, paper backup, exchange)</div><div class="line"></div></div>
+  </div>
+  <p class="note">Do not record the device PIN anywhere. The seed words already override it - a PIN only helps a thief.</p>
+
+  <div class="band">3. Master fingerprint - the one value that identifies this key</div>
+  <div class="split">
+    <div class="boxes fp8">
+      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+    </div>
+    <p class="hint">Eight hex characters, taken from the master key at m - NOT from the account xpub. If a passphrase is used, load it first and record the fingerprint shown WITH the passphrase applied. That value is also how a future recoverer confirms they have the passphrase right. Hex only: digits 0-9 and letters a-f - so a circle is always 0, a bare vertical stroke is always 1, and there is never an o, l, s, g or z.</p>
+  </div>
+  <div class="row">
+    <div class="field"><div class="cap">If this key is also used as a single-signature wallet, its derivation path (optional - standard paths are found automatically)</div><div class="line"></div></div>
+  </div>
+
+  <div class="band">4. Multisig wallets this key belongs to - OPTIONAL, leave blank for single-sig</div>
+  <p class="prose s72">Fill this in only if this key co-signs a multisig. The derivation path is a property of each WALLET, not of the key: the same device in two multisigs uses two different paths. This table is a convenience index only - the wallet configuration record is what actually rebuilds the wallet.</p>
+
+  <div class="mstable">
+    <div class="mshead">
+      <span class="c1">WALLET NAME</span>
+      <span class="c2">QUORUM<span class="sub2">e.g. 2 of 3</span></span>
+      <span class="c3">DERIVATION PATH</span>
+      <span>DESCRIPTOR CHECKSUM (8 CHARACTERS)</span>
+    </div>
+    <div class="msrow">
+      <div class="c c1"></div><div class="c c2"></div><div class="c c3"></div>
+      <div class="boxes fpcells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="msrow">
+      <div class="c c1"></div><div class="c c2"></div><div class="c c3"></div>
+      <div class="boxes fpcells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <div class="msrow">
+      <div class="c c1"></div><div class="c c2"></div><div class="c c3"></div>
+      <div class="boxes fpcells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+  </div>
+
+  <p class="hint s68 pre">PATH DECODER   m/48'/0'/0'/2' = multisig, native segwit   |   a second multisig on the same device usually increments the third number: m/48'/0'/1'/2'</p>
+  <div class="decoder">
+    <p class="hint s68 pre d1">DESCRIPTOR CHECKSUM   the eight characters after the # at the end of the descriptor:</p>
+    <p class="mono" style="font-size:7pt">wsh(sortedmulti(2,[...]))#tjg09x5t</p>
+  </div>
+  <p class="hint s68" style="margin-bottom:var(--sp-block)">It never contains b, i, o or the digit 1 - so a circle is always 0, a bare vertical stroke is always l, and a 'b' shape is always 6.</p>
+
+  <div class="row">
+    <div class="field"><div class="cap">Where the wallet configuration record is kept (at least one copy must hold no seed words)</div><div class="line"></div></div>
+  </div>
+
+  <div class="band">5. Custody and storage</div>
+  <div class="row">
+    <div class="field"><div class="cap">Where this copy is stored</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Where the other copies are stored</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Sealed by / date sealed</div><div class="line"></div></div>
+  </div>
+  <div class="row">
+    <div class="field"><div class="cap">If Sheet 3 is held by someone else, who holds it</div><div class="line"></div></div>
+    <div class="field"><div class="cap">How to reach them</div><div class="line"></div></div>
+  </div>
+
+  <div class="foot">
+    <span><span class="stamp"></span>Sheet 1 of 4 - Key identity and wallets</span>
+    <span>Never photograph. Never type into any device. Never share.</span>
+  </div>
+</section>
+
+<!-- ============================================================ SHEET 2 -->
+<section class="sheet">
+  <div class="head">
+    <div>
+      <h1>SEED WORDS (BIP39 ENGLISH WORDLIST)</h1>
+      <div class="sub">Whoever holds these words holds the key. Print in archival pigment ink. Do not join letters up.</div>
+    </div>
+    <div class="right">
+      <div class="secret">SECRET</div>
+      <div class="page-of">SHEET 2 OF 4</div>
+    </div>
+  </div>
+
+  <div class="warn" style="margin-top:var(--sp-band-top)">
+    <p>Length used:   [  ] 12 words      [  ] 18 words      [  ] 24 words        Strike through every unused row.</p>
+    <p>Write the WORD NUMBER (1-2048) beside every word. If your handwriting is ever misread, the number saves you.</p>
+  </div>
+
+  <div class="seed">
+    <div class="seedcol">
+      <div class="seedhead"><span class="h1"></span><span class="h2">WORD</span><span>NO. (1-2048)</span></div>
+      <div class="wrow"><span class="wn">1.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">2.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">3.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">4.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">5.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">6.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">7.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">8.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">9.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">10.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">11.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">12.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+    </div>
+    <div class="seedcol">
+      <div class="seedhead"><span class="h1"></span><span class="h2">WORD</span><span>NO. (1-2048)</span></div>
+      <div class="wrow"><span class="wn">13.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">14.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">15.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">16.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">17.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">18.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">19.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">20.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">21.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">22.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">23.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+      <div class="wrow"><span class="wn">24.</span><div class="boxes w8"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="boxes n4"><i></i><i></i><i></i><i></i></div></div>
+    </div>
+  </div>
+
+  <div class="warn s8" style="margin-top:5mm">
+    <h2>IF YOU ARE RECOVERING AND IT DOES NOT WORK</h2>
+    <p>The last word is a checksum, so any single mistyped word will be rejected outright by wallet software. A</p>
+    <p>phrase that 'almost works' means a transcription error, not a lost wallet - re-read this sheet against the</p>
+    <p>handwriting key on Sheet 4. Only the first four letters of each word are needed to identify it.</p>
+  </div>
+
+  <div class="foot">
+    <span><span class="stamp"></span>Sheet 2 of 4 - Seed words</span>
+    <span>Never photograph. Never type into any device. Never share.</span>
+  </div>
+</section>
+
+<!-- ============================================================ SHEET 3 -->
+<section class="sheet">
+  <div class="head">
+    <div>
+      <h1>PASSPHRASE - THE BIP39 25TH WORD</h1>
+      <div class="sub">This sheet may be held separately from Sheets 1 and 2. Read the box below before storing it.</div>
+    </div>
+    <div class="right">
+      <div class="secret">SECRET</div>
+      <div class="page-of">SHEET 3 OF 4</div>
+    </div>
+  </div>
+
+  <div class="warn s8" style="margin-top:var(--sp-band-top)">
+    <h2>WHAT THIS SHEET IS</h2>
+    <p>This sheet CANNOT move any funds on its own. It is worthless without the seed words on Sheet 2, and the</p>
+    <p>seed words are worthless without it. Held by two different people, the two halves work like a 2-of-2 lock.</p>
+    <p>SINGLE-SIG: splitting is the point. Keeping this sheet beside Sheet 2 cancels the passphrase out entirely.</p>
+    <p>MULTISIG: keeping it beside Sheet 2 is usually correct - one compromised key still cannot spend, and the</p>
+    <p>far greater risk is that you or your heir never recovers the passphrase at all.</p>
+  </div>
+
+  <div class="cbrow" style="gap:10mm">
+    <span class="cb">No passphrase used - destroy this sheet</span>
+    <span class="cb">In use, stored with Sheets 1-2</span>
+    <span class="cb">In use, stored separately</span>
+  </div>
+
+  <div class="band">How to choose one</div>
+  <p class="prose">Use four or more words from the BIP39 English wordlist, all lowercase, separated by single spaces. Nothing else: no capitals, no punctuation, no accented letters, no emoji, and never a space at the start or end. Those characters are invisible on paper or normalised differently by different wallets.</p>
+
+  <div class="band">The passphrase - one character per box, one empty box per space</div>
+  <div class="pprow"><span class="ppn">1</span><div class="boxes ppb"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  <div class="pprow"><span class="ppn">21</span><div class="boxes ppb"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  <div class="pprow"><span class="ppn">41</span><div class="boxes ppb"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  <div class="pprow"><span class="ppn">61</span><div class="boxes ppb"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+  <div class="pprow"><span class="ppn">81</span><div class="boxes ppb"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+
+  <p class="hint" style="margin-top:2mm">WRITTEN ABOVE IN (tick one)</p>
+  <div class="cbrow" style="gap:14mm; margin-top:2.5mm">
+    <span class="cb">Exactly the characters used</span>
+    <span class="cb">CAPITALS for legibility only - the real passphrase is all lowercase</span>
+  </div>
+
+  <div class="band">If this sheet is held separately - complete all of this</div>
+  <div class="split">
+    <div>
+      <p class="hint" style="font-size:6.5pt; margin-bottom:1.4mm">MASTER FINGERPRINT (COPY FROM SHEET 1)</p>
+      <div class="boxes fp8b"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+    <p class="hint s68">This says which wallet the passphrase belongs to, and lets the holder of the seed confirm the passphrase is right: load seed plus passphrase, and the device must show this exact fingerprint. It reveals nothing on its own. Leave blank if this sheet stays with Sheet 1.</p>
+  </div>
+
+  <div class="row">
+    <div class="field"><div class="cap">Who holds the seed words (Sheets 1 and 2)</div><div class="line"></div></div>
+    <div class="field"><div class="cap">How to reach them</div><div class="line"></div></div>
+  </div>
+  <div class="row">
+    <div class="field"><div class="cap">Optional hint (must mean nothing to a stranger, and must still mean something to you in twenty years)</div><div class="line"></div></div>
+  </div>
+
+  <div class="foot">
+    <span><span class="stamp"></span>Sheet 3 of 4 - Passphrase</span>
+    <span>Never photograph. Never type into any device. Never share.</span>
+  </div>
+</section>
+
+<!-- ============================================================ SHEET 4 -->
+<section class="sheet">
+  <div class="head">
+    <div>
+      <h1>INSTRUCTIONS FOR WHOEVER IS READING THIS</h1>
+      <div class="sub">Print one copy of this sheet for every person holding any part of the backup.</div>
+    </div>
+    <div class="right">
+      <div class="secret">NOT SECRET</div>
+      <div class="page-of">SHEET 4 OF 4</div>
+    </div>
+  </div>
+
+  <div style="margin-top:var(--sp-band-top)">
+    <div class="step">
+      <h3>What this is</h3>
+      <p>These sheets back up a Bitcoin wallet. The words on Sheet 2 are the equivalent of the key to a safe. They are not a password that can be reset, and no company anywhere can recover them for you.</p>
+    </div>
+    <div class="step">
+      <h3>Do this first: nothing</h3>
+      <p>There is no deadline and no emergency. Funds do not expire. Rushing is how people lose money here.</p>
+    </div>
+    <div class="step">
+      <h3>Never type, photograph or upload any of these sheets</h3>
+      <p>No legitimate service, app, exchange or support agent will ever ask for the words on Sheet 2 or the passphrase on Sheet 3. Everyone who asks is stealing from you, without exception - including anyone who telephones or emails offering to help with this wallet. Do not scan these sheets, do not photograph them 'just to be safe', do not put them in cloud storage, and do not email them to a relative.</p>
+    </div>
+    <div class="step">
+      <h3>You may be holding only part of it</h3>
+      <p>Sheet 3 is sometimes given to a different person from Sheets 1 and 2. Neither half can move funds alone. Whichever you hold, the contact details on it name the person holding the other.</p>
+    </div>
+    <div class="step">
+      <h3>Find the wallet configuration record</h3>
+      <p>If Sheet 1 lists a multisig wallet, the seed words alone are NOT enough. You also need the configuration record named on Sheet 1, and the other keys.</p>
+    </div>
+    <div class="step">
+      <h3>Get competent help</h3>
+      <p>Ask a Bitcoin professional you verified independently - a firm with a real address and reputation, never someone who contacted you first. Show them this sheet only. A trustworthy helper never needs to hold your seed words.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="field"><div class="cap">Person to contact for help (name and how to reach them)</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Second contact</div><div class="line"></div></div>
+  </div>
+
+  <div class="band">Handwriting key - fill this in now, while you are still the one who can read it</div>
+  <p class="prose s73">Everything on these sheets is lowercase letters and digits only. These are the pairs that get confused. Write each one in the box beneath its name; the small word is how the character is spoken.</p>
+
+  <div class="hwkey">
+    <div class="hw"><div class="ch">0</div><div class="nm">zero</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">o</div><div class="nm">oh</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">1</div><div class="nm">one</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">l</div><div class="nm">ell</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">2</div><div class="nm">two</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">z</div><div class="nm">zed</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">5</div><div class="nm">five</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">s</div><div class="nm">ess</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">6</div><div class="nm">six</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">b</div><div class="nm">bee</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">9</div><div class="nm">nine</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">g</div><div class="nm">gee</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">u</div><div class="nm">you</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">v</div><div class="nm">vee</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">n</div><div class="nm">en</div><div class="bx"></div></div>
+    <div class="hw"><div class="ch">m</div><div class="nm">em</div><div class="bx"></div></div>
+  </div>
+
+  <div class="band">Recovery test log - an untested backup is a guess</div>
+  <p class="prose s73">Restore the seed onto a spare device, confirm it produces the master fingerprint on Sheet 1, then wipe the test device. Repeat every year or two, and after every house move.</p>
+
+  <div class="logs">
+    <div class="logblock">
+      <div class="loghead"><span class="l1">DATE</span><span class="l2">TESTED BY</span><span class="l3">PASSED?</span></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+    </div>
+    <div class="logblock">
+      <div class="loghead"><span class="l1">DATE</span><span class="l2">TESTED BY</span><span class="l3">PASSED?</span></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+      <div class="logrow"><i class="l1"></i><i class="l2"></i><i class="l3"></i></div>
+    </div>
+  </div>
+
+  <div class="warn s78" style="margin-top:3mm">
+    <h2>LAST THING</h2>
+    <p>Paper burns and fades. Transfer the seed words to stamped or punched stainless steel, and keep copies in</p>
+    <p>two separate buildings. A backup you have never tested is a backup you do not have.</p>
+  </div>
+
+  <div class="foot">
+    <span><span class="stamp"></span>Sheet 4 of 4 - Instructions, handwriting key, test log</span>
+    <span>Never photograph. Never type into any device. Never share.</span>
+  </div>
+</section>
+
+</body>
+</html>
