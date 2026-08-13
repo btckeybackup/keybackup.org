@@ -89,9 +89,9 @@ xpub reveals a wallet's whole transaction history to whoever holds it.
 
 ## Download
 
-The current document is **v1.0**.
+The current document is **v1.1**.
 
-- <https://keybackup.org/keybackup-v1.0.html>
+- <https://keybackup.org/keybackup-v1.1.html>
 
 It is a single self-contained HTML file. Open it in any browser and
 print it. It has no scripts, no webfonts, and makes no network
@@ -100,9 +100,55 @@ ten years as it does today. Print at 100% or Actual Size, never Fit to
 Page. Sheet 1 carries a 100mm ruler so you can confirm your printer did
 not scale the page.
 
-Every released version stays downloadable permanently. Someone
-recovering from a v1.0 sheet needs v1.0 semantics, so old versions are
+Every released version stays downloadable permanently, because someone
+recovering from a v1.0 sheet needs v1.0 semantics. Old versions are
 never removed or quietly changed.
+
+- v1.0 - <https://keybackup.org/keybackup-v1.0.html>
+
+### What changed in v1.1
+
+A filled-in v1.0 set still recovers a wallet. Read it with v1.0 in
+hand, though, not v1.1: the passphrase sheet is the one place the two
+versions read differently, noted below. Everything else either adds
+room to record more, or corrects wording that was wrong or misleading.
+
+- Renamed to **Bitcoin Key Backup Record**. It records a key, not only
+  a seed.
+- **Nine boxes per seed word instead of eight.** The longest word on
+  the BIP39 English list is eight letters, so v1.0 had no room for a
+  slip. The ninth box is spare: a letter written wrong gets its box
+  filled in solid with black ink, and the writing carries on in the
+  next box. The same rule now applies to the passphrase sheet.
+- **The master fingerprint is on Sheet 2 as well as Sheet 1**, since
+  sheets get separated. It carries a tick for whether it is the
+  fingerprint for the seed plus its passphrase, or for the seed alone,
+  in which case Sheet 3 is unused and can be discarded.
+- **The handwriting key is now two blocks**, lowercase and capitals,
+  because the character pairs that get confused are not the same in
+  each. v1.0 claimed the sheets were lowercase only, which was never
+  true: capitals were always allowed.
+- **Sheets 2 and 3 record which case was used.** BIP39 words are always
+  lowercase whatever you write, so capitals there are purely a
+  legibility choice, but a reader should not have to guess.
+- **Passphrase guidance rewritten.** True randomness, and a length that
+  depends on the list: at least 7 words from the BIP39 English
+  wordlist, 6 from the EFF long wordlist, or 5 from the whole English
+  dictionary. Mixed case is allowed. v1.0 asked for four lowercase
+  BIP39 words, which is too short.
+- **The passphrase now runs together with no spaces.** v1.0 separated
+  the words with single spaces and left a box empty for each one. On
+  paper an empty box is ambiguous: it could be a space, or it could be
+  where the passphrase ended, and a space at either end is invisible
+  entirely. Removing spaces removes the whole failure mode and costs
+  nothing in strength. **This is the one change that reads a v1.0 sheet
+  differently**, so if you hold a v1.0 passphrase sheet, its empty
+  boxes still mean spaces.
+- Dropped "the BIP39 25th word" from the passphrase sheet. It is a
+  common nickname but not what a passphrase actually is.
+- Sheet 1 records a device number alongside the serial number.
+- Sheet 4 asks for one contact with name, email and telephone, rather
+  than two contacts with no fixed fields.
 
 ## Verifying the download
 
@@ -112,16 +158,17 @@ against the value published with the release:
 
 ```
 # macOS
-shasum -a 256 keybackup-v1.0.html
+shasum -a 256 keybackup-v1.1.html
 
 # Linux
-sha256sum keybackup-v1.0.html
+sha256sum keybackup-v1.1.html
 ```
 
-Expected for v1.0:
+Expected values:
 
 ```
-cb007de4b673c29958d3e4a0726e7f51682889fd365b15d6a824eaf041fbccab
+9361e76fcc6a0a3183bf06b71933e84b0f4f32b1c717d2b23fc9c32a0446dc2f  keybackup-v1.1.html
+cb007de4b673c29958d3e4a0726e7f51682889fd365b15d6a824eaf041fbccab  keybackup-v1.0.html
 ```
 
 If the value does not match, do not use the file.
@@ -144,10 +191,17 @@ npm run preview  # serve the built site
 
 The site is Vite plus Pico CSS, with no framework.
 
-The printable document at `public/keybackup-v1.0.html` is deliberately
+The printable documents at `public/keybackup-v*.html` are deliberately
 not part of the build. Files in `public/` are copied byte for byte,
 which is what keeps the document self-contained. Nothing bundles it,
 nothing minifies it, and nothing may add an external reference to it.
+
+The published checksums are taken from those files directly, so any
+edit to a document means recomputing the value in this README:
+
+```
+shasum -a 256 public/keybackup-v*.html
+```
 
 ## Licence
 

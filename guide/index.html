@@ -284,7 +284,9 @@
           <p>
             <strong>Key origin.</strong> Which device or software created the
             key, and what version. Some vendors have had derivation quirks in
-            specific firmware versions, so record it.
+            specific firmware versions, so record it. Record the serial number
+            and the device number if the hardware carries them; they are how you
+            tell two identical-looking devices apart years later.
           </p>
 
           <p>
@@ -332,6 +334,16 @@
 
           <p>
             Write in capitals if it helps legibility, and don't join letters up.
+            BIP39 words are always lowercase whichever way you write them, so
+            capitals are only ever a legibility choice. Tick the box at the top
+            of the sheet saying which you used, so nobody reading it later has
+            to guess.
+          </p>
+          <p>
+            <strong>There are nine boxes per word.</strong> No word on the list
+            is longer than eight letters, so one box is spare. If you write a
+            letter wrong, fill that box in solid with black ink and carry on in
+            the next one. A blacked-out box is not part of the word.
           </p>
           <p>
             <strong>Fill in the word numbers.</strong> Each BIP39 word has a
@@ -347,9 +359,12 @@
           </p>
           <div class="callout" id="guide--sheet-2--callout">
             <p>
-              If you make a mistake, start a fresh sheet and destroy the old
-              one. Do not cross out and rewrite. A corrected seed sheet is what
-              causes a failed recovery at the worst possible moment.
+              A blacked-out box is the only correction this sheet allows. Never
+              scribble over a letter, write on top of one, or cross a word out
+              and rewrite it. If a sheet ends up with more than the odd
+              blacked-out box, start a fresh one and destroy the old one. An
+              ambiguous seed sheet is what causes a failed recovery at the
+              worst possible moment.
             </p>
           </div>
           <p>
@@ -357,6 +372,14 @@
             And the final word encodes a checksum, so a single mistyped word is
             almost always rejected outright by wallet software: a phrase that
             "almost works" means a transcription error, not lost funds.
+          </p>
+          <p>
+            <strong>Copy the master fingerprint onto this sheet too.</strong> It
+            is already on Sheet 1, but sheets get separated, and the fingerprint
+            is how a recoverer confirms they have restored the right wallet.
+            Tick whether it is the fingerprint for these words plus the
+            passphrase on Sheet 3, or for these words on their own. If there is
+            no passphrase, Sheet 3 is unused and can be discarded entirely.
           </p>
         </details>
 
@@ -374,19 +397,50 @@
             Leave this sheet blank and destroy it if you don't use a passphrase.
           </p>
           <p>
-            <strong>Choosing one.</strong> Use four or more words from the BIP39
-            English wordlist, all lowercase, separated by single spaces. Nothing
-            else: no capitals, no punctuation, no accented letters, no emoji,
-            and never a space at the start or end.
+            <strong>Choosing one.</strong> Pick every word with true randomness,
+            using dice or a tool built for the job. A phrase you thought of
+            yourself is not random and will be guessed. How many words you need
+            depends on the list you draw from:
+          </p>
+          <ul id="guide--sheet-3--word-counts">
+            <li>at least 7 words from the BIP39 English wordlist</li>
+            <li>at least 6 words from the EFF long wordlist</li>
+            <li>at least 5 words from the whole English dictionary</li>
+          </ul>
+          <p>
+            <strong>Run the words together with no spaces between them.</strong>
+            Upper and lower case letters are both fine, as long as you tick
+            which you used. Nothing else: no spaces anywhere, no punctuation, no
+            accented letters, no emoji.
+          </p>
+          <p>
+            The no-spaces rule is about paper, not cryptography. A space is
+            invisible: an empty box could be a space, or could be where the
+            passphrase ended, and nobody reading the sheet later can tell the
+            difference. A space at the start or end is worse still, because
+            there is nothing on the page to see at all.
+            <code>correcthorsebatterystaple</code> has no such ambiguity, and
+            loses nothing in strength.
           </p>
           <p>
             Accented and unusual characters are normalised differently by
             different wallets, so the same passphrase can open different wallets
-            depending on the software. A trailing space is invisible on paper
-            and unguessable. Each is a way to lose funds while believing the
-            backup is fine.
+            depending on the software. That is another way to lose funds while
+            believing the backup is fine.
           </p>
-          <p>Write one character per box, leaving a box empty for each space.</p>
+          <p>
+            Write one character per box, starting at box 1 and filling every box
+            in order until the passphrase ends. No box in the middle should be
+            left empty.
+          </p>
+          <p>
+            <strong>Corrections work exactly as they do on Sheet 2.</strong> A
+            character written wrong gets its box filled in solid with black ink,
+            and the writing carries on in the next box. A blacked-out box is not
+            part of the passphrase. Never scribble over a character or write on
+            top of one, and if the sheet collects more than the odd blacked-out
+            box, start a fresh one and destroy the old one.
+          </p>
 
           <p><strong>Where this sheet lives is the real decision.</strong></p>
           <p>
@@ -438,6 +492,17 @@
             It takes one minute, and it is what tells a future reader whether
             the mark you made was a zero or an <code>o</code>, a
             <code>1</code> or an <code>l</code>.
+          </p>
+          <p>
+            There are two blocks: one for lowercase and one for capitals, since
+            the pairs that get confused are not the same in each. Fill in the
+            block matching the writing you actually used on Sheets 1 to 3, or
+            both blocks if you mixed them, and tick which.
+          </p>
+          <p>
+            The contact block asks for one person: their name, email and
+            telephone number. Pick someone who will actually pick up the phone,
+            rather than listing two people and trusting that one of them works.
           </p>
         </details>
       </section>
@@ -492,7 +557,8 @@
           <p>
             Restore the seed onto a spare device or into offline wallet
             software, confirm it produces the same master fingerprint written on
-            Sheet 1, then wipe the test device. Record it in the log on Sheet 4.
+            Sheets 1 and 2, then wipe the test device. Record it in the log on
+            Sheet 4.
           </p>
           <p>
             Repeat every year or two, and after every house move. Moves are when
@@ -521,6 +587,18 @@
             multisig wallet. If it does, the seed words are not enough on their
             own, and you must locate the separate descriptor backup first. Sheet
             1 records where it was kept.
+          </p>
+          <p>
+            Next, look at the tick beside the master fingerprint on Sheet 2. It
+            tells you whether a passphrase is part of this wallet. If it says
+            the words stand alone, there is no Sheet 3 to find and you should
+            not go looking for one. If it says the passphrase is needed, the
+            seed words on their own will restore a wallet that is real, empty
+            and not yours, so do not conclude the funds are gone.
+          </p>
+          <p>
+            Either way, the restored wallet must show the fingerprint written on
+            the sheets. That is how you know you have recovered the right thing.
           </p>
           <p>
             If you need help, ask a Bitcoin professional you have verified

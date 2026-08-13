@@ -55,9 +55,11 @@ both cases, then look at every page. Letter is 18mm shorter than A4 and
 is always the one that fails first, so a change that fits A4 is not
 evidence of anything.
 
-Sheets 1 and 4 are the tight ones. As of v1.0 they have roughly 7mm and
-5mm of spare room on Letter respectively, so there is not much room to
-spend.
+Sheets 1, 2 and 4 are the tight ones. As of v1.1 they have roughly 6mm,
+5mm and 4mm of spare room on Letter respectively, so there is very
+little room to spend. Sheet 3 has around 30mm. A change that needs more
+room than a sheet has means finding it elsewhere on that sheet, not
+letting the sheet grow.
 
 ## Versioning
 
@@ -79,6 +81,21 @@ someone is holding a printed copy of it.
 
 Typo fixes, wording that does not change a field's meaning, and pure
 layout adjustments do not need a bump.
+
+A version bump touches four things, and all four must move together:
+
+- a new `public/keybackup-v<version>.html`, with `--version` updated
+  inside it
+- `DOC_VERSION` in `src/site.js`, which drives the site header and the
+  download link
+- the README download links, the "what changed" notes, and the SHA256
+  block
+- `README.md` checksums are taken from the files themselves, so
+  recompute them last, after the document is final:
+  `shasum -a 256 public/keybackup-v*.html`
+
+The old document file stays exactly as it is. Never edit a released
+version to match the new one.
 
 ## The site
 
