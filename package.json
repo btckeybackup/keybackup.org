@@ -6,12 +6,18 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sheets": "node scripts/render-sheets.mjs"
   },
   "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "playwright": "^1.62.1",
+    "tailwindcss": "^4.3.3",
     "vite": "^8.2.0"
   },
   "dependencies": {
-    "@picocss/pico": "^2.1.1"
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource-variable/geist-mono": "^5.3.0",
+    "@phosphor-icons/core": "^2.1.1"
   }
 }
