@@ -99,30 +99,53 @@ version to match the new one.
 
 ## The site
 
-The site is Vite plus Pico CSS. Three hard constraints:
+The site is Vite plus Tailwind v4. Three hard constraints:
 
-- Pico CSS only. No Tailwind, whose reset destroys Pico's semantic
-  styling, no React, no other CSS frameworks.
+- Tailwind v4 only, wired up through `@tailwindcss/vite`. No React, no
+  other CSS frameworks, no component libraries.
 - No analytics, trackers, cookies, or third-party requests anywhere. A
-  page about paper backups has no business phoning home.
+  page about paper backups has no business phoning home. Fonts are
+  self-hosted through `@fontsource-variable/*`, and icons are inlined
+  from `@phosphor-icons/core` in `src/icons.js`. Never link a CDN.
 - Never commit generated PDFs. They are release artifacts only.
+
+Design tokens live in the `@theme` block at the top of `src/style.css`.
+Layout is done with utility classes; the guide's running prose is styled
+by element inside `.doc`, so paragraphs stay readable in the markup.
 
 ### Palette
 
 ```
---saffron:    #ff9500
---ink:        #031926
---snow:       #fffbff
---dim-grey:   #727072
---grey-olive: #808f87
+--ocean-deep:   #2364aa
+--white:        #ffffff
+--shadow-grey:  #262322
+--coral-glow:   #ef8354
+--grey-olive:   #8a897c
 ```
 
-**Saffron on snow is 2.2:1 and fails WCAG AA.** Never use it as text on
-a light background. On ink it is 8.1:1, so it is fine for text on dark,
-for button fills with ink-coloured text, and for accents. The site is
-pinned to the dark theme for exactly this reason: it is the only place
-the accent colour is usable, so there is no light variant to keep in
-step.
+The site is one light theme throughout, and every foreground on
+background pair in use passes WCAG AA. Three rules keep it that way:
+
+- **Ocean is the only accent.** Links, primary buttons, emphasis rules,
+  focus rings. It is 6.0:1 against white in both directions.
+- **Coral means danger and nothing else, and only ever sits on an ink
+  surface**, where it is 6.0:1. Coral on white is 2.6:1 and fails every
+  contrast threshold, so it is never text or a mark on a light
+  background.
+- **The supplied grey-olive is 3.5:1 on white** and fails AA at body
+  size. Use the `--color-muted` token, which is a darkened version at
+  5.7:1, rather than the raw colour.
+
+Ink panels, such as the failure-modes block in the guide, are components
+rather than sections that flip the theme. Nothing on the site inverts to
+a dark mode.
+
+### Sheet images
+
+The pictures on the site are the real document, not a mock-up.
+`npm run sheets` renders each sheet of the current document to
+`public/sheets/` with Playwright. Re-run it whenever the document
+version changes, and commit the PNGs.
 
 ## Licence
 

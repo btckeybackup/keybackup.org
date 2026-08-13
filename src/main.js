@@ -1,9 +1,19 @@
-import '@picocss/pico/css/pico.classless.min.css'
 import './style.css'
 import { DOC_VERSION, DOC_FILE, DOC_HREF, REPO_URL } from './site.js'
 import { renderLayout } from './layout.js'
+import { icon } from './icons.js'
+import { trackContents } from './toc.js'
 
 renderLayout()
+
+if (document.body.dataset.page === 'guide') {
+  trackContents()
+}
+
+// Any element marked with data-icon gets that Phosphor glyph inlined.
+for (const el of document.querySelectorAll('[data-icon]')) {
+  el.innerHTML = icon(el.dataset.icon, { size: Number(el.dataset.iconSize) || 20 })
+}
 
 // Fill in the version and download target wherever a page asks for them.
 for (const el of document.querySelectorAll('[data-doc-version]')) {

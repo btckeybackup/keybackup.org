@@ -1,186 +1,496 @@
-/* keybackup palette, mapped onto Pico's custom properties.
-   The site is pinned to the dark theme: saffron on ink is 8.1:1, but saffron
-   on snow is 2.2:1 and fails WCAG AA, so there is no light variant. */
+@import 'tailwindcss';
 
-:root {
-  --saffron: #ff9500;
-  --saffron-bright: #ffab33;
-  --ink: #031926;
-  --ink-raised: #0a2739;
-  --snow: #fffbff;
-  --dim-grey: #727072;
-  --grey-olive: #808f87;
-}
+@import '@fontsource-variable/geist/index.css';
+@import '@fontsource-variable/geist-mono/index.css';
 
-/* Matches Pico's own [data-theme=dark] specificity; loaded after it, so wins. */
-[data-theme='dark'] {
-  --pico-background-color: var(--ink);
-  --pico-color: var(--snow);
-  --pico-h1-color: var(--snow);
-  --pico-h2-color: var(--snow);
-  --pico-h3-color: var(--snow);
-  --pico-h4-color: var(--snow);
-  --pico-h5-color: var(--snow);
-  --pico-h6-color: var(--snow);
-  --pico-muted-color: var(--grey-olive);
-  --pico-border-color: var(--ink-raised);
-  --pico-muted-border-color: var(--ink-raised);
-  --pico-card-background-color: var(--ink-raised);
-  --pico-card-sectioning-background-color: var(--ink-raised);
-  --pico-code-background-color: var(--ink-raised);
-  --pico-code-color: var(--grey-olive);
-  --pico-blockquote-border-color: var(--saffron);
-  --pico-text-selection-color: rgb(255 149 0 / 30%);
+/* ---------------------------------------------------------------------------
+   Design tokens
 
-  /* Saffron as accent: link text on ink, and button fills with ink text. */
-  --pico-primary: var(--saffron);
-  --pico-primary-hover: var(--saffron-bright);
-  --pico-primary-underline: rgb(255 149 0 / 50%);
-  --pico-primary-focus: rgb(255 149 0 / 37.5%);
-  --pico-primary-background: var(--saffron);
-  --pico-primary-hover-background: var(--saffron-bright);
-  --pico-primary-border: var(--saffron);
-  --pico-primary-hover-border: var(--saffron-bright);
-  --pico-primary-inverse: var(--ink);
+   Colour rules, fixed for the whole site:
+   - ocean is the single accent. Links, primary buttons, emphasis rules, focus.
+   - coral is reserved for one meaning, danger, and only ever appears on an ink
+     surface. Coral on white is 2.6:1 and fails every contrast threshold, so it
+     is never text or a mark on a light background.
+   - ink is body text. muted is secondary text and is darkened from the supplied
+     grey-olive, which is 3.5:1 on white and fails AA at body size.
+   - The page is one light theme throughout. Ink panels are components, not
+     sections that flip the theme.
 
-  --pico-secondary: var(--grey-olive);
-  --pico-secondary-hover: var(--snow);
-  --pico-secondary-background: var(--ink-raised);
-  --pico-secondary-hover-background: var(--dim-grey);
-  --pico-secondary-border: var(--ink-raised);
-  --pico-secondary-hover-border: var(--dim-grey);
-  --pico-secondary-inverse: var(--snow);
+   Radius scale: --radius for controls and small surfaces, --radius-lg for
+   large panels and imagery. Nothing else.
+--------------------------------------------------------------------------- */
+
+@theme {
+  --color-ocean: #2364aa; /* 6.0:1 on paper, 6.0:1 white-on-ocean */
+  --color-ocean-strong: #1a4d84; /* hover, 8.4:1 on paper */
+  --color-ocean-tint: #eff4fa;
+  --color-ocean-line: #cbdcee;
+
+  --color-paper: #ffffff;
+  --color-ground: #fbf9f7;
+  --color-ink: #262322; /* 15.2:1 on paper */
+  --color-ink-raised: #35312f;
+  --color-muted: #68675a; /* 5.7:1 on paper */
+  --color-muted-on-ink: #b3b2a6; /* 7.6:1 on ink */
+  --color-line: #e7e3de;
+
+  --color-coral: #ef8354; /* 6.0:1 on ink. Danger only, ink surfaces only. */
+
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, monospace;
+
+  --radius: 10px;
+  --radius-lg: 14px;
+
+  --ease-out-quint: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-ground);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv01';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ocean);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  ::selection {
+    background-color: var(--color-ocean-line);
+    color: var(--color-ink);
+  }
+
+  /* Headings carry hierarchy through weight and tracking, not raw scale. */
+  h1,
+  h2,
+  h3 {
+    font-weight: 560;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
 }
 
-body > main {
-  flex: 1;
+/* ---------------------------------------------------------------------------
+   Components
+--------------------------------------------------------------------------- */
+
+@layer components {
+  /* Primary call to action. White on ocean is 6.0:1. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    white-space: nowrap;
+    border-radius: var(--radius);
+    padding: 0.8125rem 1.375rem;
+    font-size: 0.9375rem;
+    font-weight: 550;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    transition:
+      background-color 0.18s var(--ease-out-quint),
+      transform 0.18s var(--ease-out-quint),
+      box-shadow 0.18s var(--ease-out-quint);
+  }
+
+  .btn-primary {
+    background-color: var(--color-ocean);
+    color: var(--color-paper);
+    box-shadow: 0 1px 2px rgb(38 35 34 / 0.12);
+  }
+
+  .btn-primary:hover {
+    background-color: var(--color-ocean-strong);
+    box-shadow: 0 6px 18px -6px rgb(35 100 170 / 0.5);
+  }
+
+  .btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgb(38 35 34 / 0.12);
+  }
+
+  .btn-quiet {
+    color: var(--color-ink);
+    box-shadow: inset 0 0 0 1px var(--color-line);
+    background-color: var(--color-paper);
+  }
+
+  .btn-quiet:hover {
+    box-shadow: inset 0 0 0 1px var(--color-ocean-line);
+    background-color: var(--color-ocean-tint);
+  }
+
+  .btn-quiet:active {
+    transform: translateY(1px);
+  }
+
+  /* Inline text link. */
+  .link {
+    color: var(--color-ocean);
+    text-decoration: underline;
+    text-decoration-color: var(--color-ocean-line);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition:
+      color 0.15s var(--ease-out-quint),
+      text-decoration-color 0.15s var(--ease-out-quint);
+  }
+
+  .link:hover {
+    color: var(--color-ocean-strong);
+    text-decoration-color: currentColor;
+  }
+
+  /* Header and footer navigation. Underline on hover only, so the bar stays
+     quiet until it is being used. */
+  .nav-link {
+    color: var(--color-muted);
+    font-size: 0.9375rem;
+    transition: color 0.15s var(--ease-out-quint);
+  }
+
+  .nav-link:hover,
+  .nav-link[aria-current='page'] {
+    color: var(--color-ink);
+  }
+
+  /* Contents entry for the section currently being read. */
+  #guide--contents--list a[data-active] {
+    color: var(--color-ocean);
+    font-weight: 550;
+  }
+
+  /* Framing that must not sit behind a click. Ocean, not coral: these are
+     important, not dangerous. */
+  .callout {
+    border-left: 3px solid var(--color-ocean);
+    background-color: var(--color-ocean-tint);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 1.125rem 1.375rem;
+  }
+
+  .callout > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* Collapsible steps, using native <details>. No JavaScript. */
+  .step {
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    transition:
+      border-color 0.18s var(--ease-out-quint),
+      box-shadow 0.18s var(--ease-out-quint);
+  }
+
+  .step:hover,
+  .step[open] {
+    border-color: var(--color-ocean-line);
+  }
+
+  .step[open] {
+    box-shadow: 0 8px 24px -18px rgb(38 35 34 / 0.5);
+  }
+
+  .step > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    cursor: pointer;
+    list-style: none;
+    padding: 1.0625rem 1.375rem;
+    font-weight: 550;
+    letter-spacing: -0.012em;
+  }
+
+  .step > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .step > summary .step-hint {
+    display: block;
+    margin-top: 0.25rem;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    letter-spacing: 0;
+    color: var(--color-muted);
+  }
+
+  .step > summary .step-chevron {
+    display: inline-flex;
+    flex: none;
+    color: var(--color-muted);
+    transition: transform 0.22s var(--ease-out-quint);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step,
+    .step > summary .step-chevron {
+      transition: none;
+    }
+  }
+
+  .step[open] > summary .step-chevron {
+    transform: rotate(180deg);
+  }
+
+  .step[open] > summary {
+    border-bottom: 1px solid var(--color-line);
+  }
+
+  .step-body {
+    padding: 1.125rem 1.375rem 1.375rem;
+  }
+
+  /* The failure modes. The one place coral is allowed, on ink where it is
+     6.0:1, because this is the only content on the site that is a warning. */
+  .danger {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.75rem;
+  }
+
+  .danger strong {
+    color: var(--color-coral);
+    font-weight: 550;
+  }
+
+  @media (min-width: 768px) {
+    .danger {
+      padding: 2.75rem 3rem;
+    }
+  }
+
+  /* A rendered sheet from the document, presented as paper. */
+  .sheet-plate {
+    background-color: var(--color-paper);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow:
+      0 1px 2px rgb(38 35 34 / 0.06),
+      0 12px 32px -16px rgb(38 35 34 / 0.28);
+  }
+
+  .sheet-plate img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
 }
 
-body > header,
-body > footer {
-  border-color: var(--ink-raised);
-  border-style: solid;
-  border-width: 0;
+/* ---------------------------------------------------------------------------
+   Long-form prose
+
+   The guide is mostly running text. Scoping element styles to .doc keeps the
+   markup readable instead of pinning forty utilities to every paragraph.
+--------------------------------------------------------------------------- */
+
+@layer components {
+  .doc {
+    font-size: 1.0625rem;
+    line-height: 1.7;
+    color: var(--color-ink);
+  }
+
+  .doc p,
+  .doc ul,
+  .doc ol,
+  .doc pre,
+  .doc table {
+    margin-bottom: 1.125rem;
+  }
+
+  .doc > section > h2 {
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin-top: 3.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .doc h3 {
+    font-size: 1.125rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .doc ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .doc ul > li {
+    position: relative;
+    padding-left: 1.375rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .doc ul > li::before {
+    content: '';
+    position: absolute;
+    left: 0.25rem;
+    top: 0.75em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: var(--color-ocean-line);
+  }
+
+  .doc a:not(.btn):not(.nav-link) {
+    color: var(--color-ocean);
+    text-decoration: underline;
+    text-decoration-color: var(--color-ocean-line);
+    text-underline-offset: 0.2em;
+  }
+
+  .doc a:not(.btn):not(.nav-link):hover {
+    color: var(--color-ocean-strong);
+    text-decoration-color: currentColor;
+  }
+
+  .doc strong {
+    font-weight: 570;
+  }
+
+  .doc code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background-color: var(--color-ocean-tint);
+    color: var(--color-ocean-strong);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+  }
+
+  .doc pre {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+    padding: 1rem 1.125rem;
+    border-radius: var(--radius);
+    overflow-x: auto;
+  }
+
+  .doc pre code {
+    background: none;
+    color: inherit;
+    padding: 0;
+    font-size: inherit;
+  }
+
+  .doc table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9375rem;
+    text-align: left;
+  }
+
+  .doc thead th {
+    font-size: 0.8125rem;
+    font-weight: 550;
+    color: var(--color-muted);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-line);
+    vertical-align: bottom;
+  }
+
+  .doc tbody th {
+    font-weight: 550;
+    color: var(--color-ink);
+  }
+
+  .doc tbody th,
+  .doc tbody td {
+    padding: 0.75rem 1rem 0.75rem 0;
+    border-bottom: 1px solid var(--color-line);
+    vertical-align: top;
+  }
+
+  .doc tbody tr:last-child th,
+  .doc tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .doc .danger a {
+    color: var(--color-coral);
+  }
+
+  /* The danger list sets its own rhythm with rules, so it opts out of the
+     prose bullet. */
+  .doc .danger ul > li {
+    padding-left: 0;
+  }
+
+  .doc .danger ul > li::before {
+    content: none;
+  }
 }
 
-body > header {
-  border-bottom-width: 1px;
+/* ---------------------------------------------------------------------------
+   Motion
+
+   MOTION_INTENSITY 3. Entry reveal on first paint and hover feedback, nothing
+   that runs on a loop or hijacks the scroll. Reveal is driven by CSS
+   scroll-driven animation where supported, so there is no scroll listener.
+--------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    /* Finishes well before the element reaches the middle of the screen, so
+       nothing a reader is looking at is ever left part-faded. */
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 60%;
+    }
+  }
+
+  .rise {
+    animation: reveal-in 0.7s var(--ease-out-quint) both;
+  }
+
+  .rise-1 {
+    animation-delay: 0.06s;
+  }
+  .rise-2 {
+    animation-delay: 0.12s;
+  }
+  .rise-3 {
+    animation-delay: 0.18s;
+  }
 }
 
-body > footer {
-  border-top-width: 1px;
-  color: var(--grey-olive);
-}
-
-/* The one thing on the landing page that must be impossible to miss. */
-[data-doc-download] {
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-
-/* Lead paragraph directly under a page title. */
-h1 + p {
-  color: var(--grey-olive);
-  font-size: 1.125rem;
-}
-
-/* A readable measure. Pico's container is wide enough that body text runs
-   past 90 characters a line, which is the main reason the guide read as a
-   wall. Header and footer share the width so every edge lines up. */
-body > header,
-body > main,
-body > footer {
-  max-width: 46rem;
-}
-
-/* Groups the guide into phases without shouting. */
-.phase {
-  font-size: 0.8125rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--grey-olive);
-  margin-top: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-/* The failure modes. Too important to read like the rest of the page. */
-.danger {
-  border: 1px solid var(--dim-grey);
-  border-radius: var(--pico-border-radius);
-  padding: 1.25rem 1.5rem 0.5rem;
-}
-.danger > h2 {
-  font-size: 1.25rem;
-}
-
-/* The framing that must not sit behind a click. */
-.callout {
-  border-left: 3px solid var(--saffron);
-  background: var(--ink-raised);
-  border-radius: 0 var(--pico-border-radius) var(--pico-border-radius) 0;
-  padding: 1rem 1.25rem;
-  margin-bottom: var(--pico-typography-spacing-vertical);
-}
-.callout > :last-child {
-  margin-bottom: 0;
-}
-
-/* Collapsible steps, using native <details>. No JavaScript. */
-details.step {
-  border: 1px solid var(--ink-raised);
-  border-radius: var(--pico-border-radius);
-  background: var(--ink-raised);
-  margin-bottom: 0.5rem;
-  padding: 0 1.25rem;
-  transition: border-color 0.15s;
-}
-details.step:hover,
-details.step[open] {
-  border-color: var(--dim-grey);
-}
-/* Flex so Pico's chevron sits centred beside a two-line label rather than
-   floating to the bottom of it. */
-details.step > summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.9rem 0;
-  font-weight: 600;
-}
-details.step > summary::after {
-  margin: 0;
-  float: none;
-  flex: none;
-  transition: transform 0.2s;
-}
-details.step > summary .hint {
-  display: block;
-  font-weight: 400;
-  font-size: 0.875rem;
-  color: var(--grey-olive);
-  margin-top: 0.15rem;
-}
-/* Pico mutes an open summary, which reads as disabled. The open one is the
-   section you are actually reading, so keep it at full strength. */
-details.step[open] > summary {
-  color: var(--pico-color);
-  border-bottom: 1px solid var(--ink);
-  margin-bottom: 0.75rem;
-}
-details.step > :last-child {
-  padding-bottom: 0.5rem;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  details.step,
-  details.step > summary::after {
-    transition: none;
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

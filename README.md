@@ -187,9 +187,12 @@ npm install
 npm run dev      # local dev server
 npm run build    # static site into dist/
 npm run preview  # serve the built site
+npm run sheets   # re-render the sheet images from the current document
 ```
 
-The site is Vite plus Pico CSS, with no framework.
+The site is Vite plus Tailwind v4, with no framework. Fonts are
+self-hosted and icons are inlined, so the site makes no third-party
+requests either.
 
 The printable documents at `public/keybackup-v*.html` are deliberately
 not part of the build. Files in `public/` are copied byte for byte,
