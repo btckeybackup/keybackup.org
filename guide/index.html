@@ -351,6 +351,13 @@
                     import the key.
                   </p>
                   <p>
+                    Take it from the <strong>master key at <code>m</code></strong>,
+                    not from an account xpub. Some software shows a fingerprint
+                    for the account level as well, and the two are different
+                    values. The one you want is the one that identifies the key
+                    as a whole.
+                  </p>
+                  <p>
                     If you use a passphrase, load it first and record the
                     fingerprint shown
                     <strong>with the passphrase applied</strong>. That is the
@@ -372,6 +379,19 @@
                     hardware carries them; they are how you tell two
                     identical-looking devices apart years later.
                   </p>
+                  <p>
+                    <strong>Do not record the device PIN.</strong> It is not
+                    part of the backup: the seed words override it, so the PIN
+                    cannot help whoever is recovering. Written on the sheet, it
+                    only helps a thief who finds the device and the paper
+                    together.
+                  </p>
+                  <p>
+                    <strong>Single-sig derivation path.</strong> Optional.
+                    Wallet software scans the standard paths automatically, so
+                    an ordinary single-signature wallet is found without it.
+                    Record it if you used anything unusual.
+                  </p>
 
                   <p>
                     <strong>If the entropy was imported</strong>, say where the
@@ -390,6 +410,12 @@
                     each <em>wallet</em>, not to the key: the same device used
                     in a single-sig and two multisigs uses three different
                     paths. Fill in one row per wallet.
+                  </p>
+                  <p>
+                    Reading a path back: <code>m/48'/0'/0'/2'</code> is a
+                    multisig using native segwit. A second multisig on the same
+                    device usually increments the third number, so it appears as
+                    <code>m/48'/0'/1'/2'</code>.
                   </p>
                   <p>
                     The descriptor checksum is the eight characters after the
@@ -562,10 +588,24 @@
                     passphrase at all.
                   </p>
                   <p>
-                    <strong>If you split them</strong>, complete the bottom
-                    block: copy the master fingerprint across, and name the
-                    person holding the seed words. Sheet 1 has the mirror field
-                    for their contact details.
+                    <strong>Copy the master fingerprint across every time</strong>,
+                    whether you split the sheets or not. It cannot move funds,
+                    and it is what keeps this sheet matched to its wallet if you
+                    ever hold sets for more than one.
+                  </p>
+                  <p>
+                    <strong>If you split them</strong>, name the person holding
+                    the seed words, with their email and telephone number. Sheet
+                    1 has the mirror block for whoever holds this sheet.
+                  </p>
+                  <p>
+                    <strong>If you also keep the passphrase digitally</strong>,
+                    say so at the foot of the sheet: where it is, and the
+                    password or key that opens it. A passphrase on its own
+                    cannot spend, so a copy in a password manager is a
+                    different kind of risk from a copy of the seed words, and
+                    the thing that actually loses funds is a copy nobody left
+                    to find. Never put the seed words anywhere near it.
                   </p>
                   <div class="callout my-7 !mb-0" id="guide--sheet-3--callout">
                     <p>
@@ -611,11 +651,20 @@
                     used on Sheets 1 to 3, or both blocks if you mixed them, and
                     tick which.
                   </p>
-                  <p class="!mb-0">
+                  <p>
                     The contact block asks for one person: their name, email and
                     telephone number. Pick someone who will actually pick up the
                     phone, rather than listing two people and trusting that one
                     of them works.
+                  </p>
+                  <p class="!mb-0">
+                    <strong>The block below it is for your own instructions.</strong>
+                    Anything you have written about your wallets, your reasoning
+                    or your heirs is no use if nobody can reach it, so record
+                    where it lives and the password or key that opens it. Point
+                    it at something that will still exist: a document in a
+                    password manager your executor can get into, not a link that
+                    dies with the account.
                   </p>
                 </div>
               </details>
@@ -792,7 +841,14 @@
             <p>
               Every released version stays permanently downloadable. If you're
               recovering from an older sheet, you need that version's exact
-              wording and layout, not the current one.
+              wording and layout, not the current one. The
+              <a
+                href="https://github.com/btckeybackup/keybackup.org/blob/main/CHANGELOG.md"
+                rel="noopener"
+                id="guide--contributing--changelog-link"
+                >changelog</a
+              >
+              lists every release, what changed in it, and where to download it.
             </p>
             <p class="!mb-0">
               <a

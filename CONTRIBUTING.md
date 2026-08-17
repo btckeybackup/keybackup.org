@@ -55,11 +55,21 @@ both cases, then look at every page. Letter is 18mm shorter than A4 and
 is always the one that fails first, so a change that fits A4 is not
 evidence of anything.
 
-Sheets 1, 2 and 4 are the tight ones. As of v1.1 they have roughly 6mm,
-5mm and 4mm of spare room on Letter respectively, so there is very
-little room to spend. Sheet 3 has around 30mm. A change that needs more
-room than a sheet has means finding it elsewhere on that sheet, not
-letting the sheet grow.
+Every sheet is tight. As of v1.2, sheets 1, 2, 3 and 4 have roughly
+3mm, 12mm, 4mm and 5mm of spare room on Letter respectively, so there
+is very little room to spend anywhere. A change that needs more room
+than a sheet has means finding it elsewhere on that sheet, not letting
+the sheet grow.
+
+Most of the remaining slack is deliberately in the write-in fields and
+the handwriting cells, because that is the room a person needs to fill
+the sheet in. Take it back from spacing and furniture first.
+
+A quicker check than reading the PDF: load the file in Playwright with
+`emulateMedia({ media: 'print' })`, put `class="letter"` on the body,
+and measure each `.sheet`. Anything taller than 246mm has already
+overflowed, and the gap between `.foot` and its previous sibling is the
+room that sheet has left.
 
 ## Versioning
 
@@ -67,20 +77,27 @@ The version string lives in exactly one place in the document source
 and propagates from there to the header and all four sheet footers. Do
 not add a second copy.
 
-**Any change that alters the meaning of a field requires a version
-bump.** Renaming a field, changing what belongs in it, reordering the
-sheets, changing how many boxes a value gets: all of these change how a
-filled-in sheet should be read. Someone may be recovering from a sheet
-printed years ago, and they need the version they actually hold to mean
-what it meant when they filled it in.
+Versions follow [Semantic Versioning](https://semver.org/), read for a
+printed form rather than an API. [CHANGELOG.md](CHANGELOG.md) states
+the full policy; in short:
+
+- **MAJOR** - a filled-in sheet from an earlier version now reads
+  differently, because the same marks on paper mean something else.
+- **MINOR** - fields added, removed, renamed or moved. An older sheet
+  still reads correctly, but the two versions are not the same form.
+- **PATCH** - typo fixes, wording that does not change what belongs in
+  a field, and pure layout adjustments.
+
+Someone may be recovering from a sheet printed years ago, and they need
+the version they actually hold to mean what it meant when they filled
+it in. That is the whole reason the number is on the page.
 
 **Every released version stays downloadable permanently.** Old versions
 are never removed, replaced, or quietly corrected. If v1.0 contains a
 mistake, fix it in v1.1 and leave v1.0 exactly where it is, because
-someone is holding a printed copy of it.
-
-Typo fixes, wording that does not change a field's meaning, and pure
-layout adjustments do not need a bump.
+someone is holding a printed copy of it. That applies to the version
+number too: a release is never renumbered after the fact, even if the
+first number turns out to have been wrong.
 
 A version bump touches four things, and all four must move together:
 
@@ -88,11 +105,13 @@ A version bump touches four things, and all four must move together:
   inside it
 - `DOC_VERSION` in `src/site.js`, which drives the site header and the
   download link
-- the README download links, the "what changed" notes, and the SHA256
-  block
-- `README.md` checksums are taken from the files themselves, so
-  recompute them last, after the document is final:
-  `shasum -a 256 public/keybackup-v*.html`
+- a new section at the top of `CHANGELOG.md`, with the download link
+  and the SHA256 for that release
+- the current version, download link and checksum in `README.md`
+
+Checksums are taken from the files themselves, so recompute them last,
+after the document is final:
+`shasum -a 256 public/keybackup-v*.html`
 
 The old document file stays exactly as it is. Never edit a released
 version to match the new one.
