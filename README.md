@@ -89,9 +89,9 @@ xpub reveals a wallet's whole transaction history to whoever holds it.
 
 ## Download
 
-The current document is **v1.2**.
+The current document is **v1.3**.
 
-- <https://keybackup.org/keybackup-v1.2.html>
+- <https://keybackup.org/keybackup-v1.3.html>
 
 It is a single self-contained HTML file. Open it in any browser and
 print it. It has no scripts, no webfonts, and makes no network
@@ -105,44 +105,16 @@ recovering from a v1.0 sheet needs v1.0 semantics. Old versions are
 never removed or quietly changed. [CHANGELOG.md](CHANGELOG.md) lists
 every release, what changed in it, and where to download it.
 
-### What changed in v1.2
+### What changed in v1.3
 
-v1.2 is a shorter, less wordy document that leans on
-[the guide](https://keybackup.org/guide/) for the explanations and
-spends the space it saves on room to write. A filled-in v1.1 set needs
-no attention: every field that existed in v1.1 still means what it
-meant.
+v1.3 separates the fingerprint for the seed words from the fingerprint
+for the passphrase wallet, so both can be checked during recovery. Its
+multisig table now uses the end of the first receive address as a
+format-independent wallet ID, with more room for the wallet name.
 
 See [CHANGELOG.md](CHANGELOG.md) for the full list, and for every
 earlier release.
 
-## Verifying the download
-
-The document is what you are trusting your coins to, so check that the
-file you received is the file that was published. Compare its SHA256
-against the value published with the release:
-
-```
-# macOS
-shasum -a 256 keybackup-v1.2.html
-
-# Linux
-sha256sum keybackup-v1.2.html
-```
-
-Expected for v1.2:
-
-```
-15b0b2c02c3b79da09ac0901e7bd66851e68f342ee73b5d7f52877d7fa9cd151
-```
-
-If the value does not match, do not use the file. Checksums for earlier
-releases are published with each release in [CHANGELOG.md](CHANGELOG.md).
-
-This is a check against a corrupted or tampered download, not a proof
-of origin. Anyone who could replace the file could also replace a
-checksum printed next to it, so treat a match as a sanity check rather
-than a guarantee.
 
 ## Building locally
 
@@ -164,14 +136,6 @@ The printable documents at `public/keybackup-v*.html` are deliberately
 not part of the build. Files in `public/` are copied byte for byte,
 which is what keeps the document self-contained. Nothing bundles it,
 nothing minifies it, and nothing may add an external reference to it.
-
-The published checksums are taken from those files directly, so any
-edit to a document means recomputing the value in this README and in
-the changelog:
-
-```
-shasum -a 256 public/keybackup-v*.html
-```
 
 ## Licence
 

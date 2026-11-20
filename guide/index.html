@@ -207,6 +207,28 @@
               in case nothing to hand can scan that format years from now.
             </p>
 
+            <h3 id="guide--descriptor-backup--identifying-heading">
+              Identifying the right wallet
+            </h3>
+
+            <p>
+              Different apps can write the same wallet descriptor differently.
+              A BSMS file may use one wildcard path, another app may write a
+              receive-only path, and a third may combine receive and change
+              paths. Their descriptor checksums can differ even when every key
+              and every address is the same. A legacy Coldcard text
+              configuration file may not have a descriptor checksum at all.
+            </p>
+
+            <p>
+              Use the last six characters of the first receiving address, at
+              index <code>/0/0</code>, as the compact ID on Sheet 1. When
+              restoring, derive that address and compare the whole address with
+              the descriptor backup. A BSMS backup includes this first address
+              as an integrity check. The descriptor checksum still helps an app
+              catch a typo in descriptor text, but it is not a wallet ID.
+            </p>
+
             <h3 id="guide--descriptor-backup--storage-heading">
               Store it with the key backups, not away from them
             </h3>
@@ -358,11 +380,18 @@
                     as a whole.
                   </p>
                   <p>
-                    If you use a passphrase, load it first and record the
-                    fingerprint shown
-                    <strong>with the passphrase applied</strong>. That is the
-                    value that appears in your descriptor, and how a future
-                    recoverer confirms the passphrase is right.
+                    If you use a passphrase, record two fingerprints. The
+                    <strong>wallet fingerprint</strong> is shown with the
+                    passphrase applied. It is the main value that ties every
+                    sheet for that wallet together. The
+                    <strong>words-only fingerprint</strong> is shown after
+                    entering the words with no passphrase. It lets a recoverer
+                    check the words before they try the passphrase.
+                  </p>
+                  <p>
+                    Without a passphrase, fill in the wallet fingerprint and
+                    strike through the words-only field. The two values would
+                    otherwise be identical.
                   </p>
                   <p>
                     Hex uses only <code>0-9</code> and <code>a-f</code>. There
@@ -418,20 +447,26 @@
                     <code>m/48'/0'/1'/2'</code>.
                   </p>
                   <p>
-                    The descriptor checksum is the eight characters after the
-                    <code>#</code> at the very end of the descriptor:
+                    <strong>Wallet ID.</strong> Copy the last six characters of
+                    the first receiving address, at address index 0
+                    (<code>/0/0</code>). This is derived from the keys and
+                    policy, so every compatible wallet app produces the same
+                    value for the same wallet.
                   </p>
-                  <pre id="guide--sheet-1--descriptor-example"><code>wsh(sortedmulti(2,[...]))#tjg09x5t</code></pre>
                   <p>
-                    It never contains <code>b</code>, <code>i</code>,
-                    <code>o</code> or the digit <code>1</code>. So when you read
-                    it back: a circle is always zero, a bare vertical stroke is
-                    always <code>l</code>, and a shape like <code>b</code> is
-                    always <code>6</code>.
+                    A native SegWit address starts <code>bc1</code> and is
+                    normally lowercase. Its final six characters are its Bech32
+                    checksum, which is why they make a compact ID. You can write
+                    them in capitals for legibility if you tick the box on the
+                    sheet. An older wrapped address starts with <code>3</code>;
+                    copy its characters exactly, because capitals are meaningful
+                    in that format.
                   </p>
                   <p class="!mb-0">
-                    The checksum catches a transcription error in a descriptor
-                    you already have. Eight characters cannot reconstruct one.
+                    Do not use a descriptor checksum as the wallet ID. It checks
+                    the exact descriptor text, so the same wallet can have
+                    different checksums when software writes that text
+                    differently.
                   </p>
                 </div>
               </details>
@@ -492,15 +527,12 @@
                     transcription error, not lost funds.
                   </p>
                   <p class="!mb-0">
-                    <strong
-                      >Copy the master fingerprint onto this sheet too.</strong
-                    >
-                    It is already on Sheet 1, but sheets get separated, and the
-                    fingerprint is how a recoverer confirms they have restored
-                    the right wallet. Tick whether it is the fingerprint for
-                    these words plus the passphrase on Sheet 3, or for these
-                    words on their own. If there is no passphrase, Sheet 3 is
-                    unused and can be discarded entirely.
+                    <strong>Copy both fingerprints onto this sheet.</strong>
+                    For a passphrase wallet, first enter the words with no
+                    passphrase and check the words-only fingerprint. Then apply
+                    the passphrase and check the wallet fingerprint. If there is
+                    no passphrase, strike through the words-only field and Sheet
+                    3 is unused and can be discarded entirely.
                   </p>
                 </div>
               </details>
@@ -588,10 +620,20 @@
                     passphrase at all.
                   </p>
                   <p>
-                    <strong>Copy the master fingerprint across every time</strong>,
-                    whether you split the sheets or not. It cannot move funds,
-                    and it is what keeps this sheet matched to its wallet if you
-                    ever hold sets for more than one.
+                    <strong>Copy both fingerprints across every time</strong>,
+                    whether you split the sheets or not. Entering the words must
+                    show the words-only fingerprint. Applying this passphrase
+                    must then show the wallet fingerprint. This tells a
+                    recoverer whether a failed check is in the words or the
+                    passphrase.
+                  </p>
+                  <p>
+                    The words-only fingerprint does not reveal a key or spend
+                    funds. It does reveal that two passphrase wallets use the
+                    same underlying words if their words-only fingerprints
+                    match. Treat that as useful recovery information, but as
+                    linkage metadata if copies of different wallet records may
+                    be exposed together.
                   </p>
                   <p>
                     <strong>If you split them</strong>, name the person holding
@@ -724,10 +766,12 @@
                 </summary>
                 <div class="step-body">
                   <p>
-                    Restore the seed onto a spare device or into offline wallet
-                    software, confirm it produces the same master fingerprint
-                    written on Sheets 1 and 2, then wipe the test device. Record
-                    it in the log on Sheet 4.
+                    Restore the words onto a spare device or into offline wallet
+                    software. For a passphrase wallet, first confirm the
+                    words-only fingerprint, then apply the passphrase and
+                    confirm the wallet fingerprint. Without a passphrase,
+                    confirm the wallet fingerprint. Then wipe the test device
+                    and record the test in the log on Sheet 4.
                   </p>
                   <p>
                     Repeat every year or two, and after every house move. Moves
@@ -762,18 +806,13 @@
                     descriptor backup first. Sheet 1 records where it was kept.
                   </p>
                   <p>
-                    Next, look at the tick beside the master fingerprint on
-                    Sheet 2. It tells you whether a passphrase is part of this
-                    wallet. If it says the words stand alone, there is no Sheet
-                    3 to find and you should not go looking for one. If it says
-                    the passphrase is needed, the seed words on their own will
-                    restore a wallet that is real, empty and not yours, so do
-                    not conclude the funds are gone.
-                  </p>
-                  <p>
-                    Either way, the restored wallet must show the fingerprint
-                    written on the sheets. That is how you know you have
-                    recovered the right thing.
+                    Next, restore the words with no passphrase and compare the
+                    fingerprint against the words-only field. If it is struck
+                    through, there is no passphrase and the wallet fingerprint
+                    is the check you need. If it is filled in, find Sheet 3:
+                    applying its passphrase must produce the wallet fingerprint.
+                    A match at each step is how you know you recovered the right
+                    thing.
                   </p>
                   <p class="!mb-0">
                     If you need help, ask a Bitcoin professional you have
