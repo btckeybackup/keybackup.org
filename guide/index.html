@@ -221,12 +221,12 @@
             </p>
 
             <p>
-              Use the last six characters of the first receiving address, at
-              index <code>/0/0</code>, as the compact ID on Sheet 1. When
-              restoring, derive that address and compare the whole address with
-              the descriptor backup. A BSMS backup includes this first address
-              as an integrity check. The descriptor checksum still helps an app
-              catch a typo in descriptor text, but it is not a wallet ID.
+              Use the last six characters of the first receiving address as the
+              compact ID on Sheet 1. When restoring, compare the whole first
+              receiving address with the descriptor backup. A BSMS backup
+              includes this address as an integrity check. The descriptor
+              checksum still helps an app catch a typo in descriptor text, but
+              it is not a wallet ID.
             </p>
 
             <h3 id="guide--descriptor-backup--storage-heading">
@@ -417,13 +417,6 @@
                     together.
                   </p>
                   <p>
-                    <strong>Single-sig derivation path.</strong> Optional.
-                    Wallet software scans the standard paths automatically, so
-                    an ordinary single-signature wallet is found without it.
-                    Record it if you used anything unusual.
-                  </p>
-
-                  <p>
                     <strong>If the entropy was imported</strong>, say where the
                     key came from and what else has ever held it. An imported
                     key's security is capped by the weakest environment it has
@@ -448,19 +441,19 @@
                   </p>
                   <p>
                     <strong>Wallet ID.</strong> Copy the last six characters of
-                    the first receiving address, at address index 0
-                    (<code>/0/0</code>). This is derived from the keys and
-                    policy, so every compatible wallet app produces the same
-                    value for the same wallet.
+                    the first receiving address. This is derived from the keys
+                    and policy, so every compatible wallet app produces the
+                    same value for the same wallet.
                   </p>
                   <p>
                     A native SegWit address starts <code>bc1</code> and is
                     normally lowercase. Its final six characters are its Bech32
-                    checksum, which is why they make a compact ID. You can write
-                    them in capitals for legibility if you tick the box on the
-                    sheet. An older wrapped address starts with <code>3</code>;
-                    copy its characters exactly, because capitals are meaningful
-                    in that format.
+                    checksum, which is why they make a compact ID. A Bech32
+                    address is valid in all lowercase or all uppercase, never
+                    mixed case, but write this ID in lowercase as displayed. An
+                    older wrapped address starts with <code>3</code>; copy its
+                    characters exactly, because capitals are meaningful in that
+                    format.
                   </p>
                   <p class="!mb-0">
                     Do not use a descriptor checksum as the wallet ID. It checks
