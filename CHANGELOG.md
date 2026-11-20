@@ -21,10 +21,35 @@ document is not software, so the three numbers are read like this:
 Only the document is versioned. The site and the guide are not, and
 they always describe the current document.
 
+## [1.3] - 2026-11-20
+
+- Download: <https://keybackup.org/keybackup-v1.3.html>
+
+### Added
+
+- Passphrase wallets now record both their wallet fingerprint and their
+  words-only fingerprint on Sheets 1, 2 and 3. A recovery can now check
+  the words before the passphrase, then check the passphrase separately.
+- The multisig table now includes examples for wallet names and
+  derivation paths, and supports five wallets per key.
+
+### Changed
+
+- The multisig descriptor checksum field is now a six-character wallet
+  ID: the end of the first receive address at index 0. It identifies the
+  same recovered wallet regardless of how an app writes the descriptor.
+- The wallet-name column in the multisig table is wider.
+- Sheet 1 now records contact details for whoever holds Sheet 2 (seed
+  words) and Sheet 3 (passphrase), rather than general storage notes.
+
+### Removed
+
+- SHA-256 download-verification instructions and published document
+  hashes. They did not provide a useful trust anchor for users.
+
 ## [1.2] - 2026-08-17
 
 - Download: <https://keybackup.org/keybackup-v1.2.html>
-- SHA256: `15b0b2c02c3b79da09ac0901e7bd66851e68f342ee73b5d7f52877d7fa9cd151`
 
 A filled-in v1.1 set needs no attention. Every field that existed in
 v1.1 still means what it meant. v1.2 is a shorter, less wordy document
@@ -82,7 +107,6 @@ explanations, and spends the space it saves on room to write.
 ## [1.1] - 2026-08-13
 
 - Download: <https://keybackup.org/keybackup-v1.1.html>
-- SHA256: `9361e76fcc6a0a3183bf06b71933e84b0f4f32b1c717d2b23fc9c32a0446dc2f`
 
 A filled-in v1.0 set still recovers a wallet, but read it with v1.0 in
 hand rather than v1.1. The passphrase sheet is the one place the two
@@ -145,7 +169,6 @@ afterwards would break exactly the thing versioning is here to protect.
 ## [1.0] - 2026-08-10
 
 - Download: <https://keybackup.org/keybackup-v1.0.html>
-- SHA256: `cb007de4b673c29958d3e4a0726e7f51682889fd365b15d6a824eaf041fbccab`
 
 First release. Four sheets: key identity and the multisig index, seed
 words, passphrase, and instructions with a handwriting key and recovery

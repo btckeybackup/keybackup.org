@@ -55,8 +55,8 @@ both cases, then look at every page. Letter is 18mm shorter than A4 and
 is always the one that fails first, so a change that fits A4 is not
 evidence of anything.
 
-Every sheet is tight. As of v1.2, sheets 1, 2, 3 and 4 have roughly
-3mm, 12mm, 4mm and 5mm of spare room on Letter respectively, so there
+Every sheet is tight. As of v1.3, sheets 1, 2, 3 and 4 have roughly
+8mm, 11mm, 4mm and 9mm of spare room on Letter respectively, so there
 is very little room to spend anywhere. A change that needs more room
 than a sheet has means finding it elsewhere on that sheet, not letting
 the sheet grow.
@@ -106,12 +106,8 @@ A version bump touches four things, and all four must move together:
 - `DOC_VERSION` in `src/site.js`, which drives the site header and the
   download link
 - a new section at the top of `CHANGELOG.md`, with the download link
-  and the SHA256 for that release
-- the current version, download link and checksum in `README.md`
-
-Checksums are taken from the files themselves, so recompute them last,
-after the document is final:
-`shasum -a 256 public/keybackup-v*.html`
+  and a clear summary of the release
+- the current version and download link in `README.md`
 
 The old document file stays exactly as it is. Never edit a released
 version to match the new one.
