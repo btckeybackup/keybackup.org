@@ -389,9 +389,10 @@
                     check the words before they try the passphrase.
                   </p>
                   <p>
-                    Without a passphrase, fill in the wallet fingerprint and
-                    strike through the words-only field. The two values would
-                    otherwise be identical.
+                    The words-only fingerprint always applies. Without a
+                    passphrase, it is the wallet fingerprint too, so fill in
+                    the words-only value and strike through the wallet
+                    fingerprint field.
                   </p>
                   <p>
                     Hex uses only <code>0-9</code> and <code>a-f</code>. There
@@ -436,9 +437,8 @@
                   <p>
                     <strong>Multisig table.</strong> Leave it blank for
                     single-signature wallets. The derivation path belongs to
-                    each <em>wallet</em>, not to the key: the same device used
-                    in a single-sig and two multisigs uses three different
-                    paths. Fill in one row per wallet.
+                    the <em>wallet setup</em>, not to the key. Fill in one row
+                    per wallet.
                   </p>
                   <p>
                     Reading a path back: <code>m/48'/0'/0'/2'</code> is a
@@ -531,7 +531,7 @@
                     For a passphrase wallet, first enter the words with no
                     passphrase and check the words-only fingerprint. Then apply
                     the passphrase and check the wallet fingerprint. If there is
-                    no passphrase, strike through the words-only field and Sheet
+                    no passphrase, strike through the wallet fingerprint field and Sheet
                     3 is unused and can be discarded entirely.
                   </p>
                 </div>
@@ -636,9 +636,10 @@
                     be exposed together.
                   </p>
                   <p>
-                    <strong>If you split them</strong>, name the person holding
-                    the seed words, with their email and telephone number. Sheet
-                    1 has the mirror block for whoever holds this sheet.
+                    <strong>Record who holds each sheet.</strong> Sheet 1 has a
+                    contact block for the holder of Sheet 2 (seed words) and
+                    another for the holder of Sheet 3 (passphrase), including
+                    their name, email and telephone number.
                   </p>
                   <p>
                     <strong>If you also keep the passphrase digitally</strong>,
@@ -807,12 +808,12 @@
                   </p>
                   <p>
                     Next, restore the words with no passphrase and compare the
-                    fingerprint against the words-only field. If it is struck
-                    through, there is no passphrase and the wallet fingerprint
-                    is the check you need. If it is filled in, find Sheet 3:
-                    applying its passphrase must produce the wallet fingerprint.
-                    A match at each step is how you know you recovered the right
-                    thing.
+                    fingerprint against the words-only field. If the wallet
+                    fingerprint field is struck through, there is no passphrase
+                    and the words-only value is the check you need. If it is
+                    filled in, find Sheet 3: applying its passphrase must
+                    produce the wallet fingerprint. A match at each step is how
+                    you know you recovered the right thing.
                   </p>
                   <p class="!mb-0">
                     If you need help, ask a Bitcoin professional you have

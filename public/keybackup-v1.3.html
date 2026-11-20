@@ -232,7 +232,7 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
 .fp8 > i { height: 8mm; }
 .fingerprints { display: flex; gap: 8mm; margin-bottom: 1mm; }
 .fpgroup { flex: 1 1 0; }
-.fpgroup .cap { margin-bottom: 0.5mm; }
+.fpgroup .cap { margin-bottom: 0.5mm; color: var(--grey); font-size: 6.5pt; line-height: 1.15; text-transform: uppercase; white-space: nowrap; }
 .fpgroup .boxes { grid-template-columns: repeat(8, 7.5mm); }
 .fpgroup .boxes > i { height: 6.5mm; }
 .single-sig-path .field { min-height: 8mm; }
@@ -407,11 +407,11 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
   <div class="band">3. Master fingerprints</div>
   <div class="fingerprints" id="sheet-1--master-fingerprints">
     <div class="fpgroup">
-      <div class="cap">Wallet fingerprint (with passphrase, if any)</div>
+      <div class="cap">Words-only fingerprint (no passphrase)</div>
       <div class="boxes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     </div>
     <div class="fpgroup">
-      <div class="cap">Words-only fingerprint (no passphrase - strike through if unused)</div>
+      <div class="cap">Wallet fingerprint (with passphrase - strike through if unused)</div>
       <div class="boxes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
     </div>
   </div>
@@ -420,7 +420,7 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
   </div>
 
   <div class="band">4. Multisig wallets - optional, leave blank for single-sig</div>
-  <p class="prose s72">The derivation path belongs to each WALLET, not to the key, so one device in two multisigs has two paths. This table is an index only - your descriptor backup is what rebuilds the wallet.</p>
+  <p class="prose s72">The derivation path belongs to the WALLET setup, not to the key. This table is an index only - your descriptor backup is what rebuilds the wallet.</p>
 
   <div class="mstable">
     <div class="mshead">
@@ -453,16 +453,17 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
   </div>
 
   <div class="band">5. Custody and storage</div>
+  <div class="subhead">Sheet 2 (seed words) held by</div>
   <div class="row">
-    <div class="field tall"><div class="cap">Where this copy is stored</div><div class="line"></div></div>
-    <div class="field tall"><div class="cap">Where the other copies are stored</div><div class="line"></div></div>
-    <div class="field tall"><div class="cap">Sealed by / date sealed</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Their name</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Email</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Telephone</div><div class="line"></div></div>
   </div>
-  <div class="subhead">If Sheet 3 is held by someone else</div>
+  <div class="subhead">Sheet 3 (passphrase) held by</div>
   <div class="row">
-    <div class="field tall"><div class="cap">Their name</div><div class="line"></div></div>
-    <div class="field tall"><div class="cap">Email</div><div class="line"></div></div>
-    <div class="field tall"><div class="cap">Telephone</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Their name</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Email</div><div class="line"></div></div>
+    <div class="field"><div class="cap">Telephone</div><div class="line"></div></div>
   </div>
 
   <div class="foot">
@@ -531,10 +532,10 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
 
   <div class="band">Master fingerprints - copy them from Sheet 1</div>
   <div class="fingerprints" id="sheet-2--master-fingerprints" style="margin-bottom:1.2mm">
-    <div class="fpgroup"><div class="cap">Wallet fingerprint (with passphrase, if any)</div><div class="boxes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-    <div class="fpgroup"><div class="cap">Words-only fingerprint (no passphrase - strike through if unused)</div><div class="boxes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="fpgroup"><div class="cap">Words-only fingerprint (no passphrase)</div><div class="boxes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="fpgroup"><div class="cap">Wallet fingerprint (with passphrase - strike through if unused)</div><div class="boxes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
   </div>
-  <p class="hint s68">Eight hex characters, 0-9 and a-f only. First check the words-only fingerprint after entering these words with no passphrase. Then apply the passphrase and check the wallet fingerprint. If there is no passphrase, strike through the words-only field and Sheet 3 can be discarded.</p>
+  <p class="hint s68">Eight hex characters, 0-9 and a-f only. First check the words-only fingerprint after entering these words with no passphrase. Then apply the passphrase and check the wallet fingerprint. If there is no passphrase, strike through the wallet fingerprint field and Sheet 3 can be discarded.</p>
 
   <div class="warn s8" style="margin-top:3.5mm">
     <h2>IF YOU ARE RECOVERING AND IT DOES NOT WORK</h2>
@@ -598,8 +599,8 @@ body.letter .sheet { width: 186mm; }   /* Letter content width: 216 - 30 */
 
   <div class="band">Master fingerprints - copy them from Sheet 1</div>
   <div class="fingerprints" id="sheet-3--master-fingerprints" style="margin-bottom:1.2mm">
-    <div class="fpgroup"><div class="cap">Wallet fingerprint (with this passphrase)</div><div class="boxes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
     <div class="fpgroup"><div class="cap">Words-only fingerprint (no passphrase)</div><div class="boxes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+    <div class="fpgroup"><div class="cap">Wallet fingerprint (with this passphrase)</div><div class="boxes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
   </div>
   <p class="hint s68" style="margin-bottom:var(--sp-block)">Enter the words first: the words-only fingerprint must match. Then apply this passphrase: the wallet fingerprint must match. This keeps the sheets matched up and identifies whether a failed check is in the words or this passphrase.</p>
 

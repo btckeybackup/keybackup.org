@@ -39,6 +39,8 @@ they always describe the current document.
   ID: the end of the first receive address at index 0. It identifies the
   same recovered wallet regardless of how an app writes the descriptor.
 - The wallet-name column in the multisig table is wider.
+- Sheet 1 now records contact details for whoever holds Sheet 2 (seed
+  words) and Sheet 3 (passphrase), rather than general storage notes.
 
 ### Removed
 
