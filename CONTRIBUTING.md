@@ -56,7 +56,7 @@ is always the one that fails first, so a change that fits A4 is not
 evidence of anything.
 
 Every sheet is tight. As of v1.3, sheets 1, 2, 3 and 4 have roughly
-1mm, 6mm, 3mm and 6mm of spare room on Letter respectively, so there
+8mm, 11mm, 4mm and 9mm of spare room on Letter respectively, so there
 is very little room to spend anywhere. A change that needs more room
 than a sheet has means finding it elsewhere on that sheet, not letting
 the sheet grow.

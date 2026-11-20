@@ -31,7 +31,7 @@ they always describe the current document.
   words-only fingerprint on Sheets 1, 2 and 3. A recovery can now check
   the words before the passphrase, then check the passphrase separately.
 - The multisig table now includes examples for wallet names and
-  derivation paths.
+  derivation paths, and supports five wallets per key.
 
 ### Changed
 

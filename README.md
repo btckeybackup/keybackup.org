@@ -22,8 +22,8 @@ years later. Anyone holding sheets 2 and 3 together can move the funds,
 so a filled-in set is handled like bearer cash: written by hand, never
 photographed, never typed into any device.
 
-For a **single-signature** wallet that is the whole job. The seed words
-on Sheet 2 recover your funds and you need nothing else.
+For an ordinary **single-signature** wallet without a passphrase, that
+is the whole job. If you use a passphrase, you also need Sheet 3.
 
 ## Multisig needs a second backup, and keybackup does not supply it
 
@@ -37,9 +37,9 @@ funds are lost.
 That descriptor backup is yours to create and hold. These sheets are
 not it. Sheet 1 has a table for recording *which* multisig wallets a key
 belongs to, but that table is an index, so a future recoverer knows what
-to go looking for. It does not rebuild anything. The eight-character
-checksum field catches a transcription error in a descriptor you already
-have; it cannot reconstruct one.
+to go looking for. It does not rebuild anything. Its six-character
+wallet ID is taken from the first receiving address, which helps identify
+the same recovered wallet across compatible software.
 
 **The recommended form is a BC-UR2 QR code of the wallet descriptor,
 printed on paper.** BC-UR2 is a Blockchain Commons encoding that Bitcoin
